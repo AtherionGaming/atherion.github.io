@@ -53,8 +53,7 @@ mystic:{
 }
 };
 
-// Globális függvény, hogy a start gombok működjenek
-window.enter=function(type){
+function enter(type){
   current=type;
   document.getElementById("start").style.display="none";
   document.getElementById("dashboard").style.display="flex";
@@ -68,7 +67,7 @@ function goBack(){
   current="";
 }
 
-// MENU betöltése
+// MENU
 function loadMenu(){
   const menu=document.getElementById("menu");
   menu.innerHTML="";
@@ -80,7 +79,7 @@ function loadMenu(){
   back.onclick=goBack;
   menu.appendChild(back);
 
-  // Script gombok (csak az adott szekcióhoz)
+  // Script gombok a megfelelő szekcióhoz
   config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
@@ -96,7 +95,7 @@ function loadMenu(){
   ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
   menu.appendChild(ytBtn);
 
-  // Galéria
+  // Galéria (csak megjelenítés)
   const galBtn=document.createElement("div");
   galBtn.className="menu-slot";
   galBtn.textContent="Galéria";
