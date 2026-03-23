@@ -7,15 +7,12 @@
 <style>
 body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
 .header{position:relative;text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
-.back-btn{position:absolute;left:10px;top:10px;padding:10px 15px;background:#001a26;border:2px solid #00cfff;color:#00cfff;cursor:pointer;border-radius:8px;transition:0.3s;}
-.back-btn:hover{box-shadow:0 0 20px #00cfff;}
 .dashboard{display:none;height:100vh;flex-direction:column;}
 .dashboard-body{display:flex;flex:1;}
 .menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:15px;}
 .menu-slot{padding:12px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;}
 .menu-slot:hover{box-shadow:0 0 20px #00cfff;}
 .content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;}
-iframe{width:100%;height:500px;border:none;border-radius:10px;}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,150px);gap:15px;margin-top:20px;}
 .gallery img{width:150px;height:150px;object-fit:cover;border-radius:8px;border:2px solid #00cfff;}
 .upload-btn{margin-top:15px;padding:10px 20px;background:#001a26;border:2px solid #00cfff;color:#00cfff;cursor:pointer;border-radius:8px;}
@@ -33,7 +30,6 @@ iframe{width:100%;height:500px;border:none;border-radius:10px;}
 
 <div class="dashboard" id="dashboard">
 <div class="header">
-<div class="back-btn" onclick="goBack()">Vissza</div>
 Atherion Gaming
 </div>
 <div class="dashboard-body">
@@ -67,6 +63,15 @@ current="";
 function loadMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
+
+// 0. vissza gomb
+const back=document.createElement("div");
+back.className="menu-slot";
+back.textContent="Vissza";
+back.onclick=goBack;
+menu.appendChild(back);
+
+// többi slot
 const slots=[
 {name:"Script",action:showScript},
 {name:"YouTube",action:openYT},
@@ -82,9 +87,9 @@ menu.appendChild(div);
 });
 }
 
-// SCRIPT
+// SCRIPT (csak link)
 const mainContent=document.getElementById("mainContent");
-function showScript(){mainContent.innerHTML=`<iframe src="${config[current].script}"></iframe>`;}
+function showScript(){mainContent.innerHTML=`<a href="${config[current].script}" target="_blank" style="color:#00eaff;font-size:18px;">${config[current].title} Script Link</a>`;}
 function openYT(){window.open(config[current].yt,"_blank");}
 
 // GALÉRIA (localStorage)
