@@ -30,20 +30,23 @@ body{
     font-family: 'Cinzel', serif;
     font-size:56px;
     letter-spacing:3px;
-    color:#ffd27a;
+    color:#b0c4de; /* hideg kékes-acél szín */
+    background: linear-gradient(90deg, #5f6670, #b0c4de, #2f3a44);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     text-shadow:
-        0 0 15px #ffcc66,
-        0 0 25px #ffb84d,
-        0 0 40px #ffb84d;
+        0 0 5px #5f6670,
+        0 0 10px #b0c4de,
+        0 0 20px #2f3a44;
 }
 @keyframes glow{
 from{opacity:0.85}
 to{opacity:1}
 }
-.inventory{
+.inventory-scripts, .inventory-youtube{
     width:90%;
     max-width:960px;
-    margin:50px auto;
+    margin:30px auto;
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(120px,1fr));
     gap:20px;
@@ -62,9 +65,9 @@ to{opacity:1}
 .slot:hover{
     transform:scale(1.1);
     box-shadow:
-        0 0 20px #ffcc66,
-        0 0 40px rgba(255,204,102,0.5),
-        0 0 60px rgba(255,180,60,0.3);
+        0 0 20px #5f6670,
+        0 0 40px rgba(176,196,222,0.5),
+        0 0 60px rgba(47,58,68,0.3);
 }
 .icon{
     width:64px;
@@ -81,7 +84,7 @@ to{opacity:1}
 }
 .title{
     font-size:14px;
-    color:#ffd27a;
+    color:#b0c4de;
     font-weight:bold;
     text-shadow: 0 0 4px #222;
 }
@@ -94,6 +97,7 @@ to{opacity:1; transform:translateY(0)}
     margin-top:40px;
     opacity:0.7;
     font-size:14px;
+    display:none; /* eltüntettük */
 }
 /* Tooltip */
 .slot::after{
@@ -119,60 +123,49 @@ to{opacity:1; transform:translateY(0)}
 </head>
 <body>
 <div class="overlay">
-
 <div class="header">
 <h1>Atherion Gaming</h1>
 </div>
 
-<div id="inventory" class="inventory"></div>
+<!-- Script slotok -->
+<div id="inventory-scripts" class="inventory-scripts"></div>
 
-<div class="footer">
-Metin2 Event Dashboard
-</div>
-</div>
+<!-- YouTube csatornák -->
+<div id="inventory-youtube" class="inventory-youtube"></div>
 
 <script>
-/* SCRIPT CONFIG */
 const scripts = [
-  // 1-2: Script-ek
-  {
-    title: "Magic Time Two",
-    url: "https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
-    icon: "https://yt3.googleusercontent.com/ytc/AIdro_nf9XJtTfezgZuCM980nW2mfbJqcw_d7NsULkRGXu8-PA=s900-c-k-c0x00ffffff-no-rj"
-  },
-  {
-    title: "Mystic of Masters",
-    url: "https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",
-    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHEq6eoNv8-FCY7wXczFQ3CFu-4qFkE27vuw&s"
-  },
-  // 3-4: YouTube csatornák
-  {
-    title: "Atherion Game's",
-    url: "https://www.youtube.com/@atheriongames8520",
-    icon: "https://yt3.googleusercontent.com/eZACp6drCbwAefKiIG6oePfU9zvYzyIPoujI8iZWWH9-MOa4Pa-zFV6s05GWSd5mCO-rzonlYOM=s160-c-k-c0x00ffffff-no-rj"
-  },
-  {
-    title: "Anduril Mystic of Masters",
-    url: "https://www.youtube.com/@AndurilMysticofMasters",
-    icon: "https://yt3.googleusercontent.com/49Y5yC8WVg08OuhXSmYxEeMGlC1CV8kWQtc5-EumtsmGeuJRNCUirK3aqrzBIxlXzuSQsUzj=s160-c-k-c0x00ffffff-no-rj"
-  },
-  // 5-7: üres helyek
-  {title:"", url:"", icon:""},
-  {title:"", url:"", icon:""},
-  {title:"", url:"", icon:""}
+  {title: "Magic Time Two", url: "https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec", icon: "https://yt3.googleusercontent.com/ytc/AIdro_nf9XJtTfezgZuCM980nW2mfbJqcw_d7NsULkRGXu8-PA=s900-c-k-c0x00ffffff-no-rj"},
+  {title: "Mystic of Masters", url: "https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHEq6eoNv8-FCY7wXczFQ3CFu-4qFkE27vuw&s"}
 ];
 
-const inventory = document.getElementById("inventory");
+const youtubeChannels = [
+  {title: "Atherion Game's", url: "https://www.youtube.com/@atheriongames8520", icon: "https://yt3.googleusercontent.com/eZACp6drCbwAefKiIG6oePfU9zvYzyIPoujI8iZWWH9-MOa4Pa-zFV6s05GWSd5mCO-rzonlYOM=s160-c-k-c0x00ffffff-no-rj"},
+  {title: "Anduril Mystic of Masters", url: "https://www.youtube.com/@AndurilMysticofMasters", icon: "https://yt3.googleusercontent.com/49Y5yC8WVg08OuhXSmYxEeMGlC1CV8kWQtc5-EumtsmGeuJRNCUirK3aqrzBIxlXzuSQsUzj=s160-c-k-c0x00ffffff-no-rj"}
+];
+
+// Script slotok
+const inventoryScripts = document.getElementById("inventory-scripts");
 scripts.forEach(script=>{
-  if(script.url!==""){
-    const slot=document.createElement("div");
-    slot.className="slot";
-    slot.setAttribute("data-title",script.title);
-    slot.onclick=()=>{window.open(script.url,"_blank");};
-    slot.innerHTML=`<div class="icon" style="background-image:url('${script.icon}')"></div>
-                      <div class="title">${script.title}</div>`;
-    inventory.appendChild(slot);
-  }
+  const slot=document.createElement("div");
+  slot.className="slot";
+  slot.setAttribute("data-title",script.title);
+  slot.onclick=()=>{window.open(script.url,"_blank");};
+  slot.innerHTML=`<div class="icon" style="background-image:url('${script.icon}')"></div>
+                    <div class="title">${script.title}</div>`;
+  inventoryScripts.appendChild(slot);
+});
+
+// YouTube csatornák
+const inventoryYoutube = document.getElementById("inventory-youtube");
+youtubeChannels.forEach(channel=>{
+  const slot=document.createElement("div");
+  slot.className="slot";
+  slot.setAttribute("data-title",channel.title);
+  slot.onclick=()=>{window.open(channel.url,"_blank");};
+  slot.innerHTML=`<div class="icon" style="background-image:url('${channel.icon}')"></div>
+                    <div class="title">${channel.title}</div>`;
+  inventoryYoutube.appendChild(slot);
 });
 </script>
 </body>
