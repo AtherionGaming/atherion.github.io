@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
 <style>
+/* BODY */
 body{
     margin:0;
     font-family: Arial, sans-serif;
@@ -16,46 +17,27 @@ body{
     background-attachment:fixed;
     color:#fff;
     display:flex;
+    flex-direction:row; /* menü balra, tartalom jobbra */
+    min-height:100vh;
 }
+
 /* BAL MENÜ */
 .menu{
-    width:180px;
+    width:200px; /* fix szélesség */
     background:rgba(0,0,0,0.7);
     padding:20px 10px;
     display:flex;
     flex-direction:column;
     gap:15px;
-}
-.menu-slot{
-    background:linear-gradient(145deg,#1a1a1a,#050505);
-    border:2px solid #3a6f9e;
-    border-radius:10px;
-    padding:10px;
-    text-align:center;
-    color:#00cfff;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.3s;
-    position:relative;
-    font-family: 'Cinzel', serif;
-    text-shadow: 0 0 3px #00aaff, 0 0 6px #00cfff;
-}
-.menu-slot:hover{
-    animation: blueFlame 1s infinite alternate;
-}
-@keyframes blueFlame{
-    0%{text-shadow: 0 0 5px #00cfff, 0 0 10px #00aaff, 0 0 15px #0077ff;}
-    50%{text-shadow: 0 0 10px #00e5ff, 0 0 15px #00bfff, 0 0 25px #0099ff;}
-    100%{text-shadow: 0 0 5px #00cfff, 0 0 10px #00aaff, 0 0 15px #0077ff;}
+    flex-shrink:0; /* ne zsugorodjon */
+    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
 }
 
 /* JOBB OLDAL (tartalom) */
 .overlay{
-    flex:1;
+    flex:1; /* kitölti a maradék helyet */
     background:rgba(0,0,0,0.65);
-    min-height:100vh;
-    padding-bottom:50px;
-    padding-left:20px;
+    padding:20px 30px;
 }
 
 /* HEADER */
