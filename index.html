@@ -134,46 +134,37 @@ Metin2 Event Dashboard
 <script>
 /* SCRIPT CONFIG */
 const scripts = [
-{
-title: "Magic Time Two",
-url: "https://www.youtube.com/@atheriongames8520",
-icon: "https://yt3.googleusercontent.com/ytc/AIdro_nf9XJtTfezgZuCM980nW2mfbJqcw_d7NsULkRGXu8-PA=s900-c-k-c0x00ffffff-no-rj"
-},
-{
-title: "Mystic of Masters",
-url: "https://www.youtube.com/@AndurilMysticofMasters",
-icon: "https://yt3.googleusercontent.com/ytc/AIdro9R8P0bB8eoLxZkL8Ydvud8bEewrK87D3ELRg-Rg=s900-c-k-c0x00ffffff-no-rj"
-},
-{
-title: "",
-url: "",
-icon: ""
-},
-{
-title: "",
-url:"",
-icon:""
-},
-{
-title: "",
-url:"",
-icon:""
-},
-{
-title: "",
-url:"",
-icon:""
-},
-{
-title: "",
-url:"",
-icon:""
-}
+  // 1-2: Script-ek
+  {
+    title: "Magic Time Two",
+    url: "https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
+    icon: "https://yt3.googleusercontent.com/ytc/AIdro_nf9XJtTfezgZuCM980nW2mfbJqcw_d7NsULkRGXu8-PA=s900-c-k-c0x00ffffff-no-rj"
+  },
+  {
+    title: "Mystic of Masters",
+    url: "https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",
+    icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHEq6eoNv8-FCY7wXczFQ3CFu-4qFkE27vuw&s"
+  },
+  // 3-4: YouTube csatornák
+  {
+    title: "Magic Time Two Channel",
+    url: "https://www.youtube.com/@atheriongames8520",
+    icon: "https://yt3.googleusercontent.com/ytc/AIdro_nf9XJtTfezgZuCM980nW2mfbJqcw_d7NsULkRGXu8-PA=s900-c-k-c0x00ffffff-no-rj"
+  },
+  {
+    title: "Mystic of Masters Channel",
+    url: "https://www.youtube.com/@AndurilMysticofMasters",
+    icon: "https://yt3.googleusercontent.com/ytc/AIdro9R8P0bB8eoLxZkL8Ydvud8bEewrK87D3ELRg-Rg=s900-c-k-c0x00ffffff-no-rj"
+  },
+  // 5-7: üres helyek
+  {title:"", url:"", icon:""},
+  {title:"", url:"", icon:""},
+  {title:"", url:"", icon:""}
 ];
 
 const inventory = document.getElementById("inventory");
 scripts.forEach(script=>{
-if(script.url!==""){
+  if(script.url!==""){
     const slot=document.createElement("div");
     slot.className="slot";
     slot.setAttribute("data-title",script.title);
@@ -181,7 +172,7 @@ if(script.url!==""){
     slot.innerHTML=`<div class="icon" style="background-image:url('${script.icon}')"></div>
                       <div class="title">${script.title}</div>`;
     inventory.appendChild(slot);
-}
+  }
 });
 </script>
 </body>
