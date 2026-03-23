@@ -2,20 +2,40 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Atherion Gaming</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <style>
 body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
 .header{text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
 .dashboard{display:none;height:100vh;flex-direction:column;}
-.dashboard-body{display:flex;flex:1;}
+.dashboard-body{display:flex;flex:1;flex-wrap:wrap;}
 .menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:10px;}
 .menu-slot{padding:12px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;}
 .menu-slot:hover{box-shadow:0 0 20px #00cfff;}
-.content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;}
+.content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;min-width:300px;}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,150px);gap:15px;margin-top:20px;}
+.gallery img{width:150px;height:150px;object-fit:cover;border-radius:8px;border:2px solid #00cfff;cursor:pointer;}
+.upload-form{display:flex;flex-direction:column;gap:10px;width:300px;}
+.upload-form input, .upload-form button{padding:8px;border-radius:6px;border:2px solid #00cfff;background:#001a26;color:#00eaff;font-family:'Cinzel';}
+.upload-form button{cursor:pointer;}
 .start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:60px;background:rgba(0,0,0,0.7);}
 .start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
 .start-btn:hover{transform:scale(1.1);box-shadow:0 0 40px #00cfff;}
+/* Metinkő Kalkulátor animációk */
+#visszaszamlalo-bar{margin-top:15px;height:40px;background-color:rgba(34,34,34,0.5);border:3px solid #b68f40;border-radius:20px;overflow:hidden;position:relative;}
+#visszaFill{height:100%;width:100%;background-color:rgba(46,107,46,0.6);border-radius:20px 0 0 20px;position:relative;z-index:1;overflow:hidden;box-shadow: inset 0 0 10px rgba(255,255,255,0.4);}
+#visszaFill::before{content:"";position:absolute;top:0;left:-50%;width:50%;height:100%;background:linear-gradient(90deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%);transform:skewX(-20deg);filter: blur(4px);animation:shine 2s linear infinite;}
+@keyframes shine{0% { left:-50%; }100% { left:150%; }}
+#visszaText{position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:18px;color:#fff;text-shadow:0 0 6px #ff3300;z-index:2;}
+.smoke{position:absolute;bottom:-10px;left:0;width:100%;height:50px;background: radial-gradient(circle, rgba(200,200,200,0.3) 0%, rgba(0,0,0,0) 70%);filter: blur(5px);animation:rise 2s infinite;z-index:0;}
+@keyframes rise{0% {transform:translateY(0px) scaleX(1);}50% {transform:translateY(-5px) scaleX(1.05);}100% {transform:translateY(-10px) scaleX(1);}}
+/* Modal */
+#modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);justify-content:center;align-items:center;z-index:9999;}
+#modalContent{width:80%;max-width:500px;height:80%;max-height:400px;background:#111;display:flex;justify-content:center;align-items:center;border-radius:12px;flex-direction:column;}
+#modalContent div{background:rgba(0,0,0,0.6);padding:15px 25px;border-radius:10px;text-align:center;}
+#modalContent button{margin-top:15px;padding:10px 20px;border:none;border-radius:6px;background:linear-gradient(to bottom,#ff9900,#cc6600);font-weight:bold;font-size:16px;cursor:pointer;box-shadow:0 0 15px #ff3300;}
+#modalContent button:hover{transform:scale(1.05);}
 </style>
 </head>
 <body>
@@ -33,21 +53,34 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
   </div>
 </div>
 
+<div id="modal">
+  <div id="modalContent">
+    <div id="modalText">Figyelmeztetés!</div>
+    <button onclick="closeModal()">OK</button>
+  </div>
+</div>
+
+<audio id="bellSound" src="https://freesound.org/data/previews/341/341695_624378-lq.mp3" preload="auto"></audio>
+
 <script>
+// --- CONFIG ---
 let current="";
 const config={
-  magic:{
-    title:"Magic Time Two",
-    scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
-    yt:"https://www.youtube.com/@atheriongames8520"
-  },
-  mystic:{
-    title:"Mystic of Masters",
-    scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
-    yt:"https://www.youtube.com/@AndurilMysticofMasters"
-  }
+magic:{
+  title:"Magic Time Two",
+  scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
+  yt:"https://www.youtube.com/@atheriongames8520"
+},
+mystic:{
+  title:"Mystic of Masters",
+  scripts:[{name:"Metinkő Spawn", url:"embedded"}],
+  yt:"https://www.youtube.com/@AndurilMysticofMasters"
+}
 };
 
+const mainContent=document.getElementById("mainContent");
+
+// --- NAV ---
 function enter(type){
   current=type;
   document.getElementById("start").style.display="none";
@@ -62,41 +95,172 @@ function goBack(){
   current="";
 }
 
-// MENU
+// --- MENU ---
 function loadMenu(){
   const menu=document.getElementById("menu");
   menu.innerHTML="";
-
-  // 0. vissza gomb
   const back=document.createElement("div");
   back.className="menu-slot";
   back.textContent="Vissza";
   back.onclick=goBack;
   menu.appendChild(back);
 
-  // Script gombok a megfelelő szekcióhoz
   config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
     div.textContent=s.name;
-    div.onclick=()=>{window.open(s.url,"_blank");};
+    if(s.url==="embedded" && current==="mystic"){
+      div.onclick=()=>{ loadMetinko(); };
+    } else {
+      div.onclick=()=>{ window.open(s.url,"_blank"); };
+    }
     menu.appendChild(div);
   });
 
-  // YouTube gomb
   const ytBtn=document.createElement("div");
   ytBtn.className="menu-slot";
   ytBtn.textContent="YouTube";
-  ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
+  ytBtn.onclick=()=>{ window.open(config[current].yt,"_blank"); };
   menu.appendChild(ytBtn);
 
-  // Galéria gomb – átadja a szerver paramétert
+  // Galéria
   const galBtn=document.createElement("div");
   galBtn.className="menu-slot";
   galBtn.textContent="Galéria";
-  galBtn.onclick=()=>{ window.location.href=`https://atheriongaming.github.io/gallery/?server=${current}` };
+  galBtn.onclick=showGallery;
   menu.appendChild(galBtn);
+
+  const upBtn=document.createElement("div");
+  upBtn.className="menu-slot";
+  upBtn.textContent="Feltöltés";
+  upBtn.onclick=showUploadForm;
+  menu.appendChild(upBtn);
 }
+
+// --- GALÉRIA & UPLOAD ---
+function showGallery(){
+  const key="gallery_"+current;
+  let images=JSON.parse(localStorage.getItem(key)||"[]");
+  let html='<div class="gallery">';
+  images.forEach((img,i)=>{ html+=`<img src="${img.url}" onclick="openModal(${i})">`; });
+  html+='</div>';
+  mainContent.innerHTML=html;
+}
+
+function showUploadForm(){
+  mainContent.innerHTML=`<form class="upload-form">
+    <label>Kép kiválasztása:</label>
+    <input type="file" accept="image/*" id="imgInput" required>
+    <label>Dátum:</label>
+    <input type="date" id="uploadDate" required>
+    <label>Feltöltő neve:</label>
+    <input type="text" id="uploaderName" required>
+    <button type="button" onclick="uploadImageForm()">Feltöltés</button>
+  </form>`;
+}
+
+function uploadImageForm(){
+  const fileInput=document.getElementById("imgInput");
+  const dateInput=document.getElementById("uploadDate").value;
+  const nameInput=document.getElementById("uploaderName").value;
+  if(!fileInput.files[0] || !dateInput || !nameInput){ alert("Tölts ki minden mezőt!"); return; }
+  const file=URL.createObjectURL(fileInput.files[0]);
+  const key="gallery_"+current;
+  let images=JSON.parse(localStorage.getItem(key)||"[]");
+  images.push({url:file,date:dateInput,uploader:nameInput});
+  localStorage.setItem(key,JSON.stringify(images));
+  showGallery();
+}
+
+// --- MODAL ---
+let modalIndex=0;
+function openModal(idx){
+  const key="gallery_"+current;
+  const images=JSON.parse(localStorage.getItem(key)||"[]");
+  if(!images[idx]) return;
+  modalIndex=idx;
+  const modal=document.getElementById("modal");
+  modal.style.display="flex";
+  document.getElementById("modalContent").style.backgroundImage=`url('${images[idx].url}')`;
+  document.getElementById("modalText").innerText=`Feltöltő: ${images[idx].uploader} | Dátum: ${images[idx].date}`;
+}
+function closeModal(){ document.getElementById("modal").style.display="none"; }
+
+// --- BEÁGYAZOTT METINKŐ KALKULÁTOR ---
+let metinkoInterval=null, metinkoTotalMs=0, metinkoNext=null;
+
+function loadMetinko(){
+  const html=`
+  <div style="padding:15px; max-width:600px; margin:0 auto;">
+    <button style="margin-bottom:15px;" onclick="mainContent.innerHTML=''; loadMenu();">← Vissza a Mystic dashboardra</button>
+    <h2 style="color:#ffd633; text-align:center;">Metinkő Kalkulátor</h2>
+    <label>Dátum:</label><input type="date" id="datum"><br><br>
+    <label>Indítás ideje:</label>
+    <input type="text" id="ido-ora" maxlength="2" placeholder="Óra"> :
+    <input type="text" id="ido-perc" maxlength="2" placeholder="Perc"> :
+    <input type="text" id="ido-mp" maxlength="2" placeholder="Mp"><br><br>
+    <label>Respawn idő:</label>
+    <input type="text" id="resp-ora" maxlength="2" placeholder="Óra"> :
+    <input type="text" id="resp-perc" maxlength="2" placeholder="Perc"> :
+    <input type="text" id="resp-mp" maxlength="2" placeholder="Mp"><br><br>
+    <button onclick="metinkoIndit()">Indítás</button>
+    <button onclick="metinkoStop()">STOP</button>
+    <div id="visszaszamlalo-bar"><div class="smoke"></div><div id="visszaFill"></div><div id="visszaText">00:00:00</div></div>
+    <div id="metinkoEredmeny" style="margin-top:10px; color:#ffcc33;"></div>
+  </div>`;
+  mainContent.innerHTML=html;
+}
+
+function metinkoIndit(){
+  if(metinkoInterval) clearInterval(metinkoInterval);
+  const datum=document.getElementById("datum").value;
+  const idoO=parseInt(document.getElementById("ido-ora").value||0);
+  const idoP=parseInt(document.getElementById("ido-perc").value||0);
+  const idoS=parseInt(document.getElementById("ido-mp").value||0);
+  const respO=parseInt(document.getElementById("resp-ora").value||0);
+  const respP=parseInt(document.getElementById("resp-perc").value||0);
+  const respS=parseInt(document.getElementById("resp-mp").value||0);
+  metinkoTotalMs=(respO*3600+respP*60+respS)*1000;
+  if(!datum || metinkoTotalMs<=0){ alert("Add meg a dátumot és érvényes respawn időt!"); return; }
+
+  const [ev, honap, nap]=datum.split("-");
+  const start=new Date(ev, honap-1, nap, idoO, idoP, idoS);
+  const now=new Date();
+  let elapsed=now-start;
+  let cycles=Math.floor(elapsed/metinkoTotalMs);
+  let lastSpawn=new Date(start.getTime()+cycles*metinkoTotalMs);
+  metinkoNext=new Date(lastSpawn.getTime()+metinkoTotalMs);
+  document.getElementById("metinkoEredmeny").innerHTML=
+    `Utolsó spawn: ${lastSpawn.toLocaleString()}<br>Következő spawn: ${metinkoNext.toLocaleString()}`;
+  metinkoInterval=setInterval(updateMetinko,100);
+}
+
+function updateMetinko(){
+  const now=new Date();
+  let diff=metinkoNext-now;
+  const fill=document.getElementById("visszaFill");
+  const text=document.getElementById("visszaText");
+  if(diff<=0){ text.innerText="RESPAWN!"; fill.style.backgroundColor="rgba(178,34,34,0.6)"; showModal("RESPAWN!",true); clearInterval(metinkoInterval); return; }
+  const ora=Math.floor(diff/3600000), perc=Math.floor((diff%3600000)/60000), mp=Math.floor((diff%60000)/1000);
+  text.innerText=`${String(ora).padStart(2,'0')}:${String(perc).padStart(2,'0')}:${String(mp).padStart(2,'0')}`;
+  fill.style.width=(diff/metinkoTotalMs*100)+"%";
+}
+
+function metinkoStop(){
+  if(metinkoInterval) clearInterval(metinkoInterval);
+  document.getElementById("visszaFill").style.width="100%";
+  document.getElementById("visszaText").innerText="00:00:00";
+  document.getElementById("metinkoEredmeny").innerText="Számláló leállítva.";
+}
+
+// --- MODAL ---
+function showModal(text,isRespawn=false){
+  document.getElementById("modalText").innerText=text;
+  const modal=document.getElementById("modal");
+  modal.style.display="flex";
+  if(isRespawn) document.getElementById("bellSound").play();
+}
+function closeModal(){ document.getElementById("modal").style.display="none"; document.getElementById("bellSound").pause(); document.getElementById("bellSound").currentTime=0; }
 </script>
 </body>
 </html>
