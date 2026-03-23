@@ -3,184 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mystic Metinkő Kalkulátor</title>
+<title>Atherion Gaming</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');
-  background-size:cover;
-  color:white;
-  display:flex;
-  justify-content:center;
-  padding:20px;
-}
-.container{
-  width:320px;
-  background:rgba(0,0,0,0.8);
-  padding:20px;
-  border-radius:12px;
-  border:2px solid #00cfff;
-  display:flex;
-  flex-direction:column;
-  gap:15px;
-}
-.header{
-  text-align:center;
-  font-family:'Cinzel';
-  font-size:28px;
-  color:#00cfff;
-  text-shadow:0 0 20px #00cfff;
-}
-.time-panel{
-  display:flex;
-  justify-content:space-between;
-  gap:5px;
-}
-.time-panel input{
-  flex:1;
-  padding:10px;
-  border-radius:6px;
-  border:2px solid #00cfff;
-  background:#001a26;
-  color:#00eaff;
-  text-align:center;
-  font-family:'Cinzel';
-}
-button{
-  padding:12px;
-  border-radius:6px;
-  border:2px solid #00cfff;
-  background:#001a26;
-  color:#00eaff;
-  font-family:'Cinzel';
-  cursor:pointer;
-  transition:0.3s;
-}
-button:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 20px #00cfff;
-}
-#visszaszamlalo-bar{
-  height:30px;
-  background:rgba(0,0,0,0.5);
-  border:2px solid #00cfff;
-  border-radius:15px;
-  overflow:hidden;
-  position:relative;
-  margin-top:10px;
-}
-#visszaFill{
-  height:100%;
-  width:100%;
-  background:rgba(0,200,255,0.6);
-  position:relative;
-  z-index:1;
-  overflow:hidden;
-}
-#visszaText{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  font-size:16px;
-  color:white;
-  z-index:2;
-}
+body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
+.header{text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
+.dashboard{display:none;height:100vh;flex-direction:column;}
+.dashboard-body{display:flex;flex:1;flex-direction:column;}
+.menu{background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:10px;}
+.menu-slot{padding:12px;border:2px solid #00cfff;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;}
+.menu-slot:hover{box-shadow:0 0 20px #00cfff;}
+.content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-top:10px;}
+.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:30px;background:rgba(0,0,0,0.7);flex-direction:column;}
+.start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
+.start-btn:hover{transform:scale(1.05);box-shadow:0 0 40px #00cfff;}
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">Metinkő Kalkulátor - Mystic</div>
-  
-  <label>Dátum:</label>
-  <input type="date" id="datum">
 
-  <label>Indítás ideje:</label>
-  <div class="time-panel">
-    <input type="text" id="ido-ora" maxlength="2" placeholder="Óra">
-    <input type="text" id="ido-perc" maxlength="2" placeholder="Perc">
-    <input type="text" id="ido-mp" maxlength="2" placeholder="Mp">
-  </div>
-
-  <label>Respawn idő:</label>
-  <div class="time-panel">
-    <input type="text" id="resp-ora" maxlength="2" placeholder="Óra">
-    <input type="text" id="resp-perc" maxlength="2" placeholder="Perc">
-    <input type="text" id="resp-mp" maxlength="2" placeholder="Mp">
-  </div>
-
-  <button onclick="indit()">Indítás</button>
-  <button onclick="stop()">STOP</button>
-  <button onclick="toggleFiveMin()" id="fiveMinBtn">5 perc figyelmeztetés</button>
-  <button onclick="toggleAutoRestart()" id="autoBtn">Automata újraindítás</button>
-
-  <div id="visszaszamlalo-bar">
-    <div id="visszaFill"></div>
-    <div id="visszaText">00:00:00</div>
-  </div>
-
-  <div id="eredmeny"></div>
-  <div id="aktualisIdo"></div>
+<div class="start-screen" id="start">
+  <button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
+  <button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
 </div>
 
-<audio id="bellSound" src="https://freesound.org/data/previews/341/341695_624378-lq.mp3" preload="auto"></audio>
+<div class="dashboard" id="dashboard">
+  <div class="header">Atherion Gaming</div>
+  <div class="dashboard-body">
+    <div class="menu" id="menu"></div>
+    <div class="content" id="mainContent"></div>
+  </div>
+</div>
 
 <script>
-let interval=null;
-let fiveMinAlert=false,fiveMinShown=false,autoRestart=false,totalMs=0,nextSpawn=null;
+let current="";
+const config={
+  magic:{
+    title:"Magic Time Two",
+    scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
+    yt:"https://www.youtube.com/@atheriongames8520",
+    gallery:true
+  },
+  mystic:{
+    title:"Mystic of Masters",
+    scripts:[{name:"Metinkő Kalkulátor", url:"gallery.html?server=mystic"}],
+    yt:"https://www.youtube.com/@AndurilMysticofMasters",
+    gallery:true
+  }
+};
 
-function toggleFiveMin(){fiveMinAlert=!fiveMinAlert;fiveMinShown=false;document.getElementById('fiveMinBtn').style.background=fiveMinAlert?'#005f7f':'#001a26';}
-function toggleAutoRestart(){autoRestart=!autoRestart;document.getElementById('autoBtn').style.background=autoRestart?'#005f7f':'#001a26';}
-
-function beallitMaiDatum(){const ma=new Date();document.getElementById('datum').value=ma.toISOString().split('T')[0];}
-function frissitIdo(){const most=new Date();document.getElementById('aktualisIdo').innerText="Jelenlegi idő: "+most.toLocaleTimeString();}
-setInterval(frissitIdo,1000);
-
-function showModal(text){const audio=document.getElementById('bellSound');alert(text);audio.play();}
-function indit(){
-  if(interval) clearInterval(interval);
-  fiveMinShown=false;
-  const datum=document.getElementById('datum').value;
-  if(!datum){document.getElementById('eredmeny').innerText="Adj meg dátumot!";return;}
-  const [ev,honap,nap]=datum.split("-");
-  let idoO=parseInt(document.getElementById('ido-ora').value||0);
-  let idoP=parseInt(document.getElementById('ido-perc').value||0);
-  let idoS=parseInt(document.getElementById('ido-mp').value||0);
-  const respO=parseInt(document.getElementById('resp-ora').value||0);
-  const respP=parseInt(document.getElementById('resp-perc').value||0);
-  const respS=parseInt(document.getElementById('resp-mp').value||0);
-  totalMs=(respO*3600+respP*60+respS)*1000;
-  if(totalMs<=0){document.getElementById('eredmeny').innerText="Adj meg érvényes respawn időt!";return;}
-  const startTime=new Date(ev,honap-1,nap,idoO,idoP,idoS);
-  const now=new Date();
-  let elapsedMs=now-startTime;
-  let cycles=Math.floor(elapsedMs/totalMs);
-  let lastSpawn=new Date(startTime.getTime()+cycles*totalMs);
-  nextSpawn=new Date(lastSpawn.getTime()+totalMs);
-  document.getElementById('eredmeny').innerHTML=`Eltelt ciklusok: ${cycles}<br>Utolsó spawn: ${lastSpawn.toLocaleTimeString()}<br>Következő spawn: ${nextSpawn.toLocaleTimeString()}`;
-  interval=setInterval(update,100);
+function enter(type){
+  current=type;
+  document.getElementById("start").style.display="none";
+  document.getElementById("dashboard").style.display="flex";
+  loadMenu();
+  mainContent.innerHTML="";
 }
-function update(){
-  const now=new Date();
-  let diff=nextSpawn-now;
-  const fill=document.getElementById('visszaFill');
-  const text=document.getElementById('visszaText');
-  if(diff<=0){fill.style.width='100%';text.innerText='RESPAWN!';showModal('RESPAWN!');clearInterval(interval);return;}
-  const ora=Math.floor(diff/3600000),perc=Math.floor((diff%3600000)/60000),mp=Math.floor((diff%60000)/1000);
-  text.innerText=`${String(ora).padStart(2,'0')}:${String(perc).padStart(2,'0')}:${String(mp).padStart(2,'0')}`;
-  fill.style.width=(diff/totalMs*100)+'%';
-  if(fiveMinAlert && !fiveMinShown && totalMs>300000 && diff<=300000){fiveMinShown=true;showModal('5 perc a respawnig!');}
-}
-function stop(){if(interval){clearInterval(interval);interval=null;}document.getElementById('visszaFill').style.width='100%';document.getElementById('visszaText').innerText='00:00:00';document.getElementById('eredmeny').innerText='Számláló leállítva.';}
 
-beallitMaiDatum();frissitIdo();
+function goBack(){
+  document.getElementById("start").style.display="flex";
+  document.getElementById("dashboard").style.display="none";
+  current="";
+}
+
+function loadMenu(){
+  const menu=document.getElementById("menu");
+  menu.innerHTML="";
+
+  const back=document.createElement("div");
+  back.className="menu-slot";
+  back.textContent="Vissza";
+  back.onclick=goBack;
+  menu.appendChild(back);
+
+  config[current].scripts.forEach(s=>{
+    const div=document.createElement("div");
+    div.className="menu-slot";
+    div.textContent=s.name;
+    div.onclick=()=>{
+      if(current==="mystic") window.location.href=s.url;
+      else window.open(s.url,"_blank");
+    };
+    menu.appendChild(div);
+  });
+
+  const ytBtn=document.createElement("div");
+  ytBtn.className="menu-slot";
+  ytBtn.textContent="YouTube";
+  ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
+  menu.appendChild(ytBtn);
+
+  if(config[current].gallery){
+    const galBtn=document.createElement("div");
+    galBtn.className="menu-slot";
+    galBtn.textContent="Galéria";
+    galBtn.onclick=()=>{window.location.href="gallery.html?server="+current};
+    menu.appendChild(galBtn);
+  }
+}
 </script>
 </body>
 </html>
