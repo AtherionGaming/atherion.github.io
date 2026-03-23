@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
 <style>
-/* BODY */
 body{
     margin:0;
     font-family: Arial, sans-serif;
@@ -17,33 +16,56 @@ body{
     background-attachment:fixed;
     color:#fff;
     display:flex;
-    flex-direction:row; /* menü balra, tartalom jobbra */
     min-height:100vh;
 }
 
 /* BAL MENÜ */
 .menu{
-    width:200px; /* fix szélesség */
+    width:220px;
     background:rgba(0,0,0,0.7);
     padding:20px 10px;
     display:flex;
     flex-direction:column;
     gap:15px;
-    flex-shrink:0; /* ne zsugorodjon */
+    flex-shrink:0;
     box-shadow: 2px 0 10px rgba(0,0,0,0.5);
 }
+.menu-slot{
+    background:linear-gradient(145deg,#1a1a1a,#050505);
+    border:2px solid #3a6f9e;
+    border-radius:10px;
+    padding:10px;
+    text-align:center;
+    color:#00cfff;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    position:relative;
+    font-family: 'Cinzel', serif;
+    text-shadow: 0 0 3px #00aaff, 0 0 6px #00cfff;
+}
+.menu-slot:hover{
+    animation: blueFlame 1s infinite alternate;
+}
+@keyframes blueFlame{
+    0%{text-shadow: 0 0 5px #00cfff, 0 0 10px #00aaff, 0 0 15px #0077ff;}
+    50%{text-shadow: 0 0 10px #00e5ff, 0 0 15px #00bfff, 0 0 25px #0099ff;}
+    100%{text-shadow: 0 0 5px #00cfff, 0 0 10px #00aaff, 0 0 15px #0077ff;}
+}
 
-/* JOBB OLDAL (tartalom) */
+/* JOBB OLDAL */
 .overlay{
-    flex:1; /* kitölti a maradék helyet */
+    flex:1;
     background:rgba(0,0,0,0.65);
     padding:20px 30px;
+    display:flex;
+    flex-direction:column;
 }
 
 /* HEADER */
 .header{
     text-align:center;
-    padding-top:40px;
+    padding-top:20px;
 }
 .header h1{
     font-family: 'Cinzel', serif;
@@ -83,70 +105,13 @@ body{
     }
 }
 
-/* INVENTORY STÍLUS (SCRIPT + YOUTUBE) */
-.inventory-scripts, .inventory-youtube{
-    width:90%;
-    max-width:960px;
-    margin:30px auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(120px,1fr));
-    gap:20px;
-}
-.slot{
-    background:linear-gradient(145deg,#1a1a1a,#050505);
-    border:2px solid #3a6f9e;
+/* IFRAME TARTALOM */
+#content-frame{
+    flex:1;
+    border:none;
+    margin-top:20px;
     border-radius:12px;
-    padding:10px;
-    text-align:center;
-    transition:0.25s;
-    cursor:pointer;
-    position:relative;
-}
-.slot:hover{
-    transform:scale(1.1);
-    box-shadow:
-        0 0 20px #00cfff,
-        0 0 40px rgba(0,196,255,0.5),
-        0 0 60px rgba(0,180,255,0.3);
-}
-.icon{
-    width:64px;
-    height:64px;
-    margin:auto;
-    background-size:cover;
-    background-position:center;
-    border-radius:6px;
-    margin-bottom:10px;
-    transition:0.3s;
-}
-.slot:hover .icon{
-    transform:scale(1.2);
-}
-.title{
-    font-size:14px;
-    color:#00cfff;
-    font-weight:bold;
-    text-shadow: 0 0 4px #222;
-}
-/* Tooltip */
-.slot::after{
-    content: attr(data-title);
-    position:absolute;
-    bottom:120%;
-    left:50%;
-    transform:translateX(-50%);
-    background:rgba(0,0,0,0.85);
-    padding:4px 8px;
-    border-radius:6px;
-    font-size:12px;
-    color:#fff;
-    opacity:0;
-    pointer-events:none;
-    transition:0.3s;
-    white-space:nowrap;
-}
-.slot:hover::after{
-    opacity:1;
+    box-shadow: 0 0 20px rgba(0,196,255,0.5);
 }
 </style>
 </head>
@@ -161,72 +126,42 @@ body{
 <h1>Atherion Gaming</h1>
 </div>
 
-<!-- Script slotok -->
-<div id="inventory-scripts" class="inventory-scripts"></div>
-
-<!-- YouTube csatornák -->
-<div id="inventory-youtube" class="inventory-youtube"></div>
+<iframe id="content-frame" src="" width="100%" height="600px"></iframe>
 
 </div>
 
 <script>
-/* MENÜ CONFIG */
+/* MENÜ + SCRIPT CONFIG */
 const menuSlots = [
-    {name:"Név1", url:"#"},
-    {name:"Név2", url:"#"},
-    {name:"Név3", url:"#"},
-    {name:"Név4", url:"#"},
-    {name:"Név5", url:"#"},
-    {name:"Név6", url:"#"},
-    {name:"Név7", url:"#"},
-    {name:"Név8", url:"#"},
-    {name:"Név9", url:"#"},
-    {name:"Név10", url:"#"}
+  {name:"Magic Time Two", type:"script", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"},
+  {name:"Mystic of Masters", type:"script", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"},
+  {name:"Atherion Game's", type:"youtube", url:"https://www.youtube.com/@atheriongames8520"},
+  {name:"Anduril Mystic of Masters", type:"youtube", url:"https://www.youtube.com/@AndurilMysticofMasters"},
+  {name:"Név5", type:"placeholder", url:"#"},
+  {name:"Név6", type:"placeholder", url:"#"},
+  {name:"Név7", type:"placeholder", url:"#"},
+  {name:"Név8", type:"placeholder", url:"#"},
+  {name:"Név9", type:"placeholder", url:"#"},
+  {name:"Név10", type:"placeholder", url:"#"}
 ];
 
 const menu = document.getElementById("menu");
+const contentFrame = document.getElementById("content-frame");
+
 menuSlots.forEach(slot=>{
-    const div = document.createElement("div");
-    div.className="menu-slot";
-    div.textContent = slot.name;
-    div.onclick = ()=>{window.open(slot.url,"_blank");};
-    menu.appendChild(div);
-});
-
-/* SCRIPT CONFIG */
-const scripts = [
-  {title: "Magic Time Two", url: "https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec", icon: "https://yt3.googleusercontent.com/ytc/AIdro_nf9XJtTfezgZuCM980nW2mfbJqcw_d7NsULkRGXu8-PA=s900-c-k-c0x00ffffff-no-rj"},
-  {title: "Mystic of Masters", url: "https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHEq6eoNv8-FCY7wXczFQ3CFu-4qFkE27vuw&s"}
-];
-
-const youtubeChannels = [
-  {title: "Atherion Game's", url: "https://www.youtube.com/@atheriongames8520", icon: "https://yt3.googleusercontent.com/eZACp6drCbwAefKiIG6oePfU9zvYzyIPoujI8iZWWH9-MOa4Pa-zFV6s05GWSd5mCO-rzonlYOM=s160-c-k-c0x00ffffff-no-rj"},
-  {title: "Anduril Mystic of Masters", url: "https://www.youtube.com/@AndurilMysticofMasters", icon: "https://yt3.googleusercontent.com/49Y5yC8WVg08OuhXSmYxEeMGlC1CV8kWQtc5-EumtsmGeuJRNCUirK3aqrzBIxlXzuSQsUzj=s160-c-k-c0x00ffffff-no-rj"}
-];
-
-// Script slotok
-const inventoryScripts = document.getElementById("inventory-scripts");
-scripts.forEach(script=>{
-  const slot=document.createElement("div");
-  slot.className="slot";
-  slot.setAttribute("data-title",script.title);
-  slot.onclick=()=>{window.open(script.url,"_blank");};
-  slot.innerHTML=`<div class="icon" style="background-image:url('${script.icon}')"></div>
-                    <div class="title">${script.title}</div>`;
-  inventoryScripts.appendChild(slot);
-});
-
-// YouTube csatornák
-const inventoryYoutube = document.getElementById("inventory-youtube");
-youtubeChannels.forEach(channel=>{
-  const slot=document.createElement("div");
-  slot.className="slot";
-  slot.setAttribute("data-title",channel.title);
-  slot.onclick=()=>{window.open(channel.url,"_blank");};
-  slot.innerHTML=`<div class="icon" style="background-image:url('${channel.icon}')"></div>
-                    <div class="title">${channel.title}</div>`;
-  inventoryYoutube.appendChild(slot);
+  const div = document.createElement("div");
+  div.className="menu-slot";
+  div.textContent = slot.name;
+  div.onclick = ()=>{
+    if(slot.type==="script"){
+      contentFrame.src = slot.url;
+    } else if(slot.type==="youtube"){
+      window.open(slot.url,"_blank");
+    }
+  };
+  menu.appendChild(div);
 });
 </script>
+
 </body>
 </html>
