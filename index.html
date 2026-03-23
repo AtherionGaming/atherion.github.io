@@ -3,26 +3,129 @@
 <head>
 <meta charset="UTF-8">
 <title>Atherion Gaming</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
 <style>
-body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
-.header{text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
-.dashboard{display:none;height:100vh;flex-direction:column;}
-.dashboard-body{display:flex;flex:1;}
-.menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:10px;}
-.menu-slot{padding:12px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;}
-.menu-slot:hover{box-shadow:0 0 20px #00cfff;}
-.content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,150px);gap:15px;margin-top:20px;}
-.gallery img{width:150px;height:150px;object-fit:cover;border-radius:8px;border:2px solid #00cfff;}
-.upload-form{display:flex;flex-direction:column;gap:10px;width:300px;}
-.upload-form input, .upload-form button{padding:8px;border-radius:6px;border:2px solid #00cfff;background:#001a26;color:#00eaff;font-family:'Cinzel';}
-.upload-form button{cursor:pointer;}
-.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:60px;background:rgba(0,0,0,0.7);}
-.start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
-.start-btn:hover{transform:scale(1.1);box-shadow:0 0 40px #00cfff;}
+body{
+margin:0;
+font-family:Arial;
+background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');
+background-size:cover;
+color:white;
+}
+
+.header{
+text-align:center;
+font-family:'Cinzel';
+font-size:60px;
+color:#00cfff;
+text-shadow:0 0 30px #00cfff;
+margin-bottom:10px;
+}
+
+.dashboard{
+display:none;
+height:100vh;
+flex-direction:column;
+}
+
+.dashboard-body{
+display:flex;
+flex:1;
+}
+
+.menu{
+width:220px;
+background:rgba(0,0,0,0.8);
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.menu-slot{
+padding:12px;
+border:2px solid #3a6f9e;
+border-radius:8px;
+text-align:center;
+cursor:pointer;
+font-family:'Cinzel';
+color:#00cfff;
+background:#070d14;
+transition:0.3s;
+}
+
+.menu-slot:hover{
+box-shadow:0 0 20px #00cfff;
+}
+
+.content{
+flex:1;
+background:rgba(0,0,0,0.6);
+padding:25px;
+overflow:auto;
+border-radius:10px;
+margin-left:10px;
+}
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,150px);
+gap:15px;
+margin-top:20px;
+}
+
+.gallery img{
+width:150px;
+height:150px;
+object-fit:cover;
+border-radius:8px;
+border:2px solid #00cfff;
+}
+
+.upload-form{
+display:flex;
+flex-direction:column;
+gap:10px;
+width:300px;
+}
+
+.upload-form input,
+.upload-form button{
+padding:8px;
+border-radius:6px;
+border:2px solid #00cfff;
+background:#001a26;
+color:#00eaff;
+font-family:'Cinzel';
+}
+
+.start-screen{
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:60px;
+background:rgba(0,0,0,0.7);
+}
+
+.start-btn{
+padding:25px 50px;
+font-size:28px;
+font-family:'Cinzel';
+border:2px solid #00cfff;
+background:linear-gradient(#0b1a2a,#02060c);
+color:#00eaff;
+cursor:pointer;
+border-radius:12px;
+transition:0.3s;
+}
 </style>
 </head>
+
 <body>
 
 <div class="start-screen" id="start">
@@ -32,6 +135,7 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 
 <div class="dashboard" id="dashboard">
 <div class="header">Atherion Gaming</div>
+
 <div class="dashboard-body">
 <div class="menu" id="menu"></div>
 <div class="content" id="mainContent"></div>
@@ -39,114 +143,124 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 </div>
 
 <script>
-let current="";
-const config={
+
+/* SUPABASE CONFIG */
+const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
+const supabaseKey = "sb_publishable_WlXi3AVW5wKWUwvNSG2ffA_lOnWtL8X";
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+/* SCRIPT CONFIG */
+const config = {
 magic:{
-  title:"Magic Time Two",
-  scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
-  yt:"https://www.youtube.com/@atheriongames8520"
+script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
+yt:"https://www.youtube.com/@atheriongames8520"
 },
 mystic:{
-  title:"Mystic of Masters",
-  scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
-  yt:"https://www.youtube.com/@AndurilMysticofMasters"
+script:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",
+yt:"https://www.youtube.com/@AndurilMysticofMasters"
 }
 };
 
+let current="";
+const mainContent=document.getElementById("mainContent");
+
 function enter(type){
-  current=type;
-  document.getElementById("start").style.display="none";
-  document.getElementById("dashboard").style.display="flex";
-  loadMenu();
-  mainContent.innerHTML="";
+current=type;
+document.getElementById("start").style.display="none";
+document.getElementById("dashboard").style.display="flex";
+loadMenu();
 }
 
 function goBack(){
-  document.getElementById("start").style.display="flex";
-  document.getElementById("dashboard").style.display="none";
-  current="";
+document.getElementById("start").style.display="flex";
+document.getElementById("dashboard").style.display="none";
 }
 
-// MENU
+/* MENU */
 function loadMenu(){
-  const menu=document.getElementById("menu");
-  menu.innerHTML="";
+const menu=document.getElementById("menu");
+menu.innerHTML="";
 
-  // 0. vissza gomb
-  const back=document.createElement("div");
-  back.className="menu-slot";
-  back.textContent="Vissza";
-  back.onclick=goBack;
-  menu.appendChild(back);
+createMenu("Vissza",goBack);
 
-  // Script gombok (csak a megfelelő szekcióhoz)
-  config[current].scripts.forEach(s=>{
-    const div=document.createElement("div");
-    div.className="menu-slot";
-    div.textContent=s.name;
-    div.onclick=()=>{window.open(s.url,"_blank");};
-    menu.appendChild(div);
-  });
+if(current==="magic")
+createMenu("Eventek",()=>window.open(config.magic.script));
 
-  // YouTube gomb
-  const ytBtn=document.createElement("div");
-  ytBtn.className="menu-slot";
-  ytBtn.textContent="YouTube";
-  ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
-  menu.appendChild(ytBtn);
+if(current==="mystic")
+createMenu("Metin Spawn",()=>window.open(config.mystic.script));
 
-  // Galéria menüpont (csak megjelenítés, **nincs feltöltés**)
-  const galBtn=document.createElement("div");
-  galBtn.className="menu-slot";
-  galBtn.textContent="Galéria";
-  galBtn.onclick=showGallery;
-  menu.appendChild(galBtn);
+createMenu("YouTube",()=>window.open(config[current].yt));
 
-  // Feltöltés menüpont (külön)
-  const upBtn=document.createElement("div");
-  upBtn.className="menu-slot";
-  upBtn.textContent="Feltöltés";
-  upBtn.onclick=showUploadForm;
-  menu.appendChild(upBtn);
+createMenu("Galéria",showGallery);
+
+createMenu("Feltöltés",showUploadForm);
 }
 
-// GALÉRIA (csak képek)
-const mainContent=document.getElementById("mainContent");
-function showGallery(){
-  const key="gallery_"+current;
-  let images=JSON.parse(localStorage.getItem(key)||"[]");
-  let html=`<div class="gallery">`;
-  images.forEach(img=>{html+=`<img src="${img.url}">`;});
-  html+=`</div>`;
-  mainContent.innerHTML=html;
+function createMenu(name,action){
+const div=document.createElement("div");
+div.className="menu-slot";
+div.textContent=name;
+div.onclick=action;
+menu.appendChild(div);
 }
 
-// FELTÖLTÉS űrlap
+/* GALÉRIA */
+async function showGallery(){
+const { data } = await supabase
+.from("images")
+.select("*")
+.eq("server", current);
+
+let html=`<div class="gallery">`;
+
+data.forEach(img=>{
+html+=`<img src="${img.url}">`;
+});
+
+html+=`</div>`;
+mainContent.innerHTML=html;
+}
+
+/* FELTÖLTÉS */
 function showUploadForm(){
-  mainContent.innerHTML=`<form class="upload-form">
-    <label>Kép kiválasztása:</label>
-    <input type="file" accept="image/*" id="imgInput" required>
-    <label>Dátum:</label>
-    <input type="date" id="uploadDate" required>
-    <label>Feltöltő neve:</label>
-    <input type="text" id="uploaderName" required>
-    <button type="button" onclick="uploadImageForm()">Feltöltés</button>
-  </form>`;
+mainContent.innerHTML=`
+<div class="upload-form">
+<input type="file" id="imgInput">
+<input type="date" id="uploadDate">
+<input type="text" id="uploaderName" placeholder="Feltöltő neve">
+<button onclick="uploadImage()">Feltöltés</button>
+</div>
+`;
 }
 
-function uploadImageForm(){
-  const fileInput=document.getElementById("imgInput");
-  const dateInput=document.getElementById("uploadDate").value;
-  const nameInput=document.getElementById("uploaderName").value;
-  if(!fileInput.files[0] || !dateInput || !nameInput){alert("Tölts ki minden mezőt!"); return;}
+async function uploadImage(){
+const file=document.getElementById("imgInput").files[0];
+const date=document.getElementById("uploadDate").value;
+const name=document.getElementById("uploaderName").value;
 
-  const file=URL.createObjectURL(fileInput.files[0]);
-  const key="gallery_"+current;
-  let images=JSON.parse(localStorage.getItem(key)||"[]");
-  images.push({url:file,date:dateInput,uploader:nameInput});
-  localStorage.setItem(key,JSON.stringify(images));
-  showGallery();
+const fileName=Date.now()+"_"+file.name;
+
+await supabase.storage
+.from("gallery")
+.upload(fileName,file);
+
+const { data } = supabase.storage
+.from("gallery")
+.getPublicUrl(fileName);
+
+await supabase
+.from("images")
+.insert({
+url:data.publicUrl,
+server:current,
+uploader:name,
+date:date
+});
+
+alert("Feltöltve!");
 }
+
 </script>
+
 </body>
 </html>
