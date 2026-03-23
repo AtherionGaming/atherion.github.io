@@ -15,7 +15,9 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 .content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;}
 .gallery{display:grid;grid-template-columns:repeat(auto-fill,150px);gap:15px;margin-top:20px;}
 .gallery img{width:150px;height:150px;object-fit:cover;border-radius:8px;border:2px solid #00cfff;}
-.upload-btn{margin-top:15px;padding:10px 20px;background:#001a26;border:2px solid #00cfff;color:#00cfff;cursor:pointer;border-radius:8px;}
+.upload-form{display:flex;flex-direction:column;gap:10px;width:300px;}
+.upload-form input, .upload-form button{padding:8px;border-radius:6px;border:2px solid #00cfff;background:#001a26;color:#00eaff;font-family:'Cinzel';}
+.upload-form button{cursor:pointer;}
 .start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:60px;background:rgba(0,0,0,0.7);}
 .start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
 .start-btn:hover{transform:scale(1.1);box-shadow:0 0 40px #00cfff;}
@@ -61,7 +63,7 @@ function enter(type){
   document.getElementById("start").style.display="none";
   document.getElementById("dashboard").style.display="flex";
   loadMenu();
-  mainContent.innerHTML=""; // üres kezdet
+  mainContent.innerHTML="";
 }
 
 function goBack(){
@@ -82,7 +84,7 @@ function loadMenu(){
   back.onclick=goBack;
   menu.appendChild(back);
 
-  // Script link gombok
+  // Script gombok a megfelelő szekcióhoz
   config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
@@ -91,46 +93,64 @@ function loadMenu(){
     menu.appendChild(div);
   });
 
-  // Extra menüpontok
-  const extra=[
-    {name:"YouTube", action:()=>{window.open(config[current].yt,"_blank");}},
-    {name:"Galéria", action:showGallery},
-    {name:"Feltöltés", action:uploadImage}
-  ];
-  extra.forEach(e=>{
-    const div=document.createElement("div");
-    div.className="menu-slot";
-    div.textContent=e.name;
-    div.onclick=e.action;
-    menu.appendChild(div);
-  });
+  // YouTube gomb
+  const ytBtn=document.createElement("div");
+  ytBtn.className="menu-slot";
+  ytBtn.textContent="YouTube";
+  ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
+  menu.appendChild(ytBtn);
+
+  // Galéria (feltöltés nélkül)
+  const galBtn=document.createElement("div");
+  galBtn.className="menu-slot";
+  galBtn.textContent="Galéria";
+  galBtn.onclick=showGallery;
+  menu.appendChild(galBtn);
+
+  // Feltöltés menü
+  const upBtn=document.createElement("div");
+  upBtn.className="menu-slot";
+  upBtn.textContent="Feltöltés";
+  upBtn.onclick=showUploadForm;
+  menu.appendChild(upBtn);
 }
 
-// GALÉRIA (feltöltés nélkül)
+// GALÉRIA (csak képek)
 const mainContent=document.getElementById("mainContent");
 function showGallery(){
   const key="gallery_"+current;
   let images=JSON.parse(localStorage.getItem(key)||"[]");
   let html=`<div class="gallery">`;
-  images.forEach(img=>{html+=`<img src="${img}">`;});
+  images.forEach(img=>{html+=`<img src="${img.url}">`;});
   html+=`</div>`;
   mainContent.innerHTML=html;
 }
 
-// FELTÖLTÉS (külön menüpont)
-function uploadImage(){
-  const input=document.createElement("input");
-  input.type="file";
-  input.accept="image/*";
-  input.onchange=e=>{
-    const file=URL.createObjectURL(e.target.files[0]);
-    const key="gallery_"+current;
-    let images=JSON.parse(localStorage.getItem(key)||"[]");
-    images.push(file);
-    localStorage.setItem(key,JSON.stringify(images));
-    showGallery();
-  };
-  input.click();
+// FELTÖLTÉS
+function showUploadForm(){
+  mainContent.innerHTML=`<form class="upload-form">
+    <label>Kép kiválasztása:</label>
+    <input type="file" accept="image/*" id="imgInput" required>
+    <label>Dátum:</label>
+    <input type="date" id="uploadDate" required>
+    <label>Feltöltő neve:</label>
+    <input type="text" id="uploaderName" required>
+    <button type="button" onclick="uploadImageForm()">Feltöltés</button>
+  </form>`;
+}
+
+function uploadImageForm(){
+  const fileInput=document.getElementById("imgInput");
+  const dateInput=document.getElementById("uploadDate").value;
+  const nameInput=document.getElementById("uploaderName").value;
+  if(!fileInput.files[0] || !dateInput || !nameInput){alert("Tölts ki minden mezőt!"); return;}
+
+  const file=URL.createObjectURL(fileInput.files[0]);
+  const key="gallery_"+current;
+  let images=JSON.parse(localStorage.getItem(key)||"[]");
+  images.push({url:file,date:dateInput,uploader:nameInput});
+  localStorage.setItem(key,JSON.stringify(images));
+  showGallery();
 }
 </script>
 </body>
