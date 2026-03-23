@@ -27,26 +27,22 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 <body>
 
 <div class="start-screen" id="start">
-<button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
-<button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
+  <button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
+  <button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
 </div>
 
 <div class="dashboard" id="dashboard">
-<div class="header">Atherion Gaming</div>
-<div class="dashboard-body">
-<div class="menu" id="menu"></div>
-<div class="content" id="mainContent"></div>
-</div>
+  <div class="header">Atherion Gaming</div>
+  <div class="dashboard-body">
+    <div class="menu" id="menu"></div>
+    <div class="content" id="mainContent"></div>
+  </div>
 </div>
 
 <script>
-// --- Supabase init ---
-const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA";
-const supabase = supabaseJs.createClient(supabaseUrl, supabaseKey);
-
-// --- Config ---
 let current="";
+const mainContent=document.getElementById("mainContent");
+
 const config={
   magic:{
     title:"Magic Time Two",
@@ -60,7 +56,6 @@ const config={
   }
 };
 
-// --- Functions ---
 function enter(type){
   current=type;
   document.getElementById("start").style.display="none";
@@ -75,7 +70,6 @@ function goBack(){
   current="";
 }
 
-// --- Menu ---
 function loadMenu(){
   const menu=document.getElementById("menu");
   menu.innerHTML="";
@@ -113,28 +107,26 @@ function loadMenu(){
   menu.appendChild(upBtn);
 }
 
-// --- Main Content ---
-const mainContent=document.getElementById("mainContent");
+// --- Supabase init ---
+const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA";
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-// Galéria lekérése Supabase-ból
 async function showGallery(){
   mainContent.innerHTML="Betöltés...";
-  const { data, error } = await supabase
-    .from('images')
-    .select('*')
-    .eq('server', current)
-    .order('created_at', { ascending: false });
-
-  if(error){mainContent.innerHTML="Hiba a galéria betöltésekor"; console.error(error); return;}
-  let html=`<div class="gallery">`;
-  data.forEach(img=>{
-    html+=`<img src="${img.url}" alt="${img.uploader}">`;
-  });
-  html+=`</div>`;
-  mainContent.innerHTML=html;
+  try {
+    const { data, error } = await supabaseClient.from('images').select('*').eq('server', current).order('created_at', { ascending: false });
+    if(error){throw error;}
+    let html=`<div class="gallery">`;
+    data.forEach(img=>{html+=`<img src="${img.url}">`;});
+    html+=`</div>`;
+    mainContent.innerHTML=html;
+  } catch(err){
+    console.error(err);
+    mainContent.innerHTML="Hiba a galéria betöltésekor";
+  }
 }
 
-// Feltöltés űrlap
 function showUploadForm(){
   mainContent.innerHTML=`<form class="upload-form">
     <label>Kép kiválasztása:</label>
@@ -143,12 +135,11 @@ function showUploadForm(){
     <input type="date" id="uploadDate" required>
     <label>Feltöltő neve:</label>
     <input type="text" id="uploaderName" required>
-    <button type="button" onclick="uploadImageForm()">Feltöltés</button>
+    <button type="button" onclick="uploadImage()">Feltöltés</button>
   </form>`;
 }
 
-// Feltöltés Supabase Storage-ba
-async function uploadImageForm(){
+async function uploadImage(){
   const fileInput=document.getElementById("imgInput");
   const dateInput=document.getElementById("uploadDate").value;
   const nameInput=document.getElementById("uploaderName").value;
@@ -157,26 +148,21 @@ async function uploadImageForm(){
   const file=fileInput.files[0];
   const filename = `${current}_${Date.now()}_${file.name}`;
 
-  // feltöltés Storage-ba
-  const { data: uploadData, error: uploadError } = await supabase.storage
-    .from('gallery')
-    .upload(filename, file);
+  try{
+    // Upload Storage
+    const { error: uploadError } = await supabaseClient.storage.from('gallery').upload(filename, file);
+    if(uploadError){throw uploadError;}
+    const { data: publicData } = supabaseClient.storage.from('gallery').getPublicUrl(filename);
 
-  if(uploadError){alert("Feltöltés hiba"); console.error(uploadError); return;}
+    // Insert row
+    const { error: insertError } = await supabaseClient.from('images').insert([{server:current,url:publicData.publicUrl,uploader:nameInput,date:dateInput}]);
+    if(insertError){throw insertError;}
 
-  const { data: publicData } = supabase
-    .storage
-    .from('gallery')
-    .getPublicUrl(filename);
-
-  // Mentés Supabase táblába
-  const { error: insertError } = await supabase
-    .from('images')
-    .insert([{ server: current, url: publicData.publicUrl, uploader: nameInput, date: dateInput }]);
-
-  if(insertError){alert("Hiba a mentés során"); console.error(insertError); return;}
-
-  showGallery();
+    showGallery();
+  }catch(err){
+    console.error(err);
+    alert("Hiba történt a feltöltés során");
+  }
 }
 </script>
 </body>
