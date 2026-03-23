@@ -30,9 +30,7 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 </div>
 
 <div class="dashboard" id="dashboard">
-<div class="header">
-Atherion Gaming
-</div>
+<div class="header">Atherion Gaming</div>
 <div class="dashboard-body">
 <div class="menu" id="menu"></div>
 <div class="content" id="mainContent"></div>
@@ -45,15 +43,13 @@ const config={
 magic:{
   title:"Magic Time Two",
   scripts:[
-    {name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"},
-    {name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}
+    {name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}
   ],
   yt:"https://www.youtube.com/@atheriongames8520"
 },
 mystic:{
   title:"Mystic of Masters",
   scripts:[
-    {name:"Eventek", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"},
     {name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}
   ],
   yt:"https://www.youtube.com/@AndurilMysticofMasters"
@@ -65,7 +61,7 @@ function enter(type){
   document.getElementById("start").style.display="none";
   document.getElementById("dashboard").style.display="flex";
   loadMenu();
-  showScriptLinks();
+  mainContent.innerHTML=""; // üres kezdet
 }
 
 function goBack(){
@@ -79,23 +75,23 @@ function loadMenu(){
   const menu=document.getElementById("menu");
   menu.innerHTML="";
 
-  // vissza gomb 0. slot
+  // 0. vissza gomb
   const back=document.createElement("div");
   back.className="menu-slot";
   back.textContent="Vissza";
   back.onclick=goBack;
   menu.appendChild(back);
 
-  // Script link gombok: Eventek, Metin Spawn
+  // Script link gombok
   config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
     div.textContent=s.name;
-    div.onclick=()=>{mainContent.innerHTML=`<a href="${s.url}" target="_blank" class="link-item">${s.name} Script Link</a>`;};
+    div.onclick=()=>{window.open(s.url,"_blank");};
     menu.appendChild(div);
   });
 
-  // YouTube, Galéria, Feltöltés
+  // Extra menüpontok
   const extra=[
     {name:"YouTube", action:()=>{window.open(config[current].yt,"_blank");}},
     {name:"Galéria", action:showGallery},
@@ -110,18 +106,18 @@ function loadMenu(){
   });
 }
 
-// GALÉRIA (localStorage)
+// GALÉRIA (feltöltés nélkül)
 const mainContent=document.getElementById("mainContent");
 function showGallery(){
   const key="gallery_"+current;
   let images=JSON.parse(localStorage.getItem(key)||"[]");
   let html=`<div class="gallery">`;
   images.forEach(img=>{html+=`<img src="${img}">`;});
-  html+=`</div><button class="upload-btn" onclick="uploadImage()">Kép feltöltése</button>`;
+  html+=`</div>`;
   mainContent.innerHTML=html;
 }
 
-// FELTÖLTÉS (localStorage)
+// FELTÖLTÉS (külön menüpont)
 function uploadImage(){
   const input=document.createElement("input");
   input.type="file";
@@ -135,13 +131,6 @@ function uploadImage(){
     showGallery();
   };
   input.click();
-}
-
-// kezdeti script linkek
-function showScriptLinks(){
-  if(config[current].scripts.length>0){
-    mainContent.innerHTML=`<a href="${config[current].scripts[0].url}" target="_blank" class="link-item">${config[current].scripts[0].name} Script Link</a>`;
-  }
 }
 </script>
 </body>
