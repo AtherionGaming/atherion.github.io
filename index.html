@@ -8,159 +8,218 @@
 
 <style>
 body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');
-    background-size:cover;
-    background-position:center;
-    background-attachment:fixed;
-    color:#fff;
-    display:flex;
-    min-height:100vh;
+margin:0;
+font-family:Arial;
+background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');
+background-size:cover;
+background-position:center;
+color:white;
 }
 
-/* BAL MENÜ */
+/* START SCREEN */
+.start-screen{
+height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:60px;
+background:rgba(0,0,0,0.7);
+}
+
+.start-btn{
+padding:25px 50px;
+font-size:28px;
+font-family:'Cinzel';
+border:2px solid #00cfff;
+background:linear-gradient(#0b1a2a,#02060c);
+color:#00eaff;
+cursor:pointer;
+border-radius:12px;
+transition:0.3s;
+box-shadow:0 0 20px rgba(0,200,255,0.4);
+}
+
+.start-btn:hover{
+transform:scale(1.1);
+box-shadow:0 0 40px #00cfff;
+}
+
+/* DASHBOARD */
+.dashboard{
+display:none;
+height:100vh;
+}
+
 .menu{
-    width:220px;
-    background:rgba(0,0,0,0.7);
-    padding:20px 10px;
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-    flex-shrink:0;
-    box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+width:220px;
+background:rgba(0,0,0,0.8);
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
 }
+
 .menu-slot{
-    background:linear-gradient(145deg,#1a1a1a,#050505);
-    border:2px solid #3a6f9e;
-    border-radius:10px;
-    padding:10px;
-    text-align:center;
-    color:#00cfff;
-    font-weight:bold;
-    cursor:pointer;
-    transition:0.3s;
-    position:relative;
-    font-family: 'Cinzel', serif;
-    text-shadow: 0 0 3px #00aaff, 0 0 6px #00cfff;
+padding:12px;
+border:2px solid #3a6f9e;
+border-radius:8px;
+text-align:center;
+cursor:pointer;
+font-family:'Cinzel';
+color:#00cfff;
+background:#070d14;
+transition:0.3s;
 }
+
 .menu-slot:hover{
-    animation: blueFlame 1s infinite alternate;
-}
-@keyframes blueFlame{
-    0%{text-shadow: 0 0 5px #00cfff, 0 0 10px #00aaff, 0 0 15px #0077ff;}
-    50%{text-shadow: 0 0 10px #00e5ff, 0 0 15px #00bfff, 0 0 25px #0099ff;}
-    100%{text-shadow: 0 0 5px #00cfff, 0 0 10px #00aaff, 0 0 15px #0077ff;}
+box-shadow:0 0 20px #00cfff;
 }
 
-/* JOBB OLDAL */
-.overlay{
-    flex:1;
-    background:rgba(0,0,0,0.65);
-    padding:20px 30px;
-    display:flex;
-    flex-direction:column;
+.content{
+flex:1;
+background:rgba(0,0,0,0.6);
+padding:25px;
+overflow:auto;
 }
 
-/* HEADER */
 .header{
-    text-align:center;
-    padding-top:20px;
-}
-.header h1{
-    font-family: 'Cinzel', serif;
-    font-size:72px;
-    letter-spacing:3px;
-    color:#00cfff;
-    text-shadow:
-        0 0 5px #00cfff,
-        0 0 10px #00bfff,
-        0 0 20px #00bfff,
-        0 0 30px #00aaff,
-        0 0 40px #0099ff,
-        0 0 50px #0088ff,
-        0 0 75px #0077ff;
-    animation: neonGlow 2s ease-in-out infinite alternate;
-}
-@keyframes neonGlow{
-    from {
-        text-shadow:
-        0 0 5px #00cfff,
-        0 0 10px #00bfff,
-        0 0 20px #00bfff,
-        0 0 30px #00aaff,
-        0 0 40px #0099ff,
-        0 0 50px #0088ff,
-        0 0 75px #0077ff;
-    }
-    to {
-        text-shadow:
-        0 0 10px #00e5ff,
-        0 0 20px #00dfff,
-        0 0 30px #00d0ff,
-        0 0 40px #00c5ff,
-        0 0 50px #00b8ff,
-        0 0 60px #00aaff,
-        0 0 100px #009fff;
-    }
+text-align:center;
+font-family:'Cinzel';
+font-size:60px;
+color:#00cfff;
+text-shadow:0 0 30px #00cfff;
+margin-bottom:20px;
 }
 
-/* IFRAME TARTALOM */
-#content-frame{
-    flex:1;
-    border:none;
-    margin-top:20px;
-    border-radius:12px;
-    box-shadow: 0 0 20px rgba(0,196,255,0.5);
+iframe{
+width:100%;
+height:500px;
+border:none;
+border-radius:10px;
+}
+
+/* GALLERY */
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,150px);
+gap:15px;
+margin-top:20px;
+}
+
+.gallery img{
+width:150px;
+height:150px;
+object-fit:cover;
+border-radius:8px;
+border:2px solid #00cfff;
+}
+
+.upload-btn{
+margin-top:15px;
+padding:10px 20px;
+background:#001a26;
+border:2px solid #00cfff;
+color:#00cfff;
+cursor:pointer;
+border-radius:8px;
 }
 </style>
 </head>
 <body>
 
-<!-- BAL MENÜ -->
-<div class="menu" id="menu"></div>
-
-<!-- JOBB OLDAL -->
-<div class="overlay">
-<div class="header">
-<h1>Atherion Gaming</h1>
+<!-- START -->
+<div class="start-screen" id="start">
+<button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
+<button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
 </div>
 
-<iframe id="content-frame" src="" width="100%" height="600px"></iframe>
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+
+<div class="menu">
+<div class="menu-slot" onclick="showScript()">Script</div>
+<div class="menu-slot" onclick="openYT()">YouTube</div>
+<div class="menu-slot" onclick="showGallery()">Galéria</div>
+</div>
+
+<div class="content">
+<div class="header" id="title"></div>
+<div id="mainContent"></div>
+</div>
 
 </div>
 
 <script>
-/* MENÜ + SCRIPT CONFIG */
-const menuSlots = [
-  {name:"Magic Time Two", type:"script", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"},
-  {name:"Mystic of Masters", type:"script", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"},
-  {name:"Atherion Game's", type:"youtube", url:"https://www.youtube.com/@atheriongames8520"},
-  {name:"Anduril Mystic of Masters", type:"youtube", url:"https://www.youtube.com/@AndurilMysticofMasters"},
-  {name:"Név5", type:"placeholder", url:"#"},
-  {name:"Név6", type:"placeholder", url:"#"},
-  {name:"Név7", type:"placeholder", url:"#"},
-  {name:"Név8", type:"placeholder", url:"#"},
-  {name:"Név9", type:"placeholder", url:"#"},
-  {name:"Név10", type:"placeholder", url:"#"}
-];
+let current = "";
 
-const menu = document.getElementById("menu");
-const contentFrame = document.getElementById("content-frame");
+/* CONFIG */
+const config = {
+magic:{
+title:"Magic Time Two",
+script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
+yt:"https://www.youtube.com/@atheriongames8520"
+},
+mystic:{
+title:"Mystic of Masters",
+script:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",
+yt:"https://www.youtube.com/@AndurilMysticofMasters"
+}
+};
 
-menuSlots.forEach(slot=>{
-  const div = document.createElement("div");
-  div.className="menu-slot";
-  div.textContent = slot.name;
-  div.onclick = ()=>{
-    if(slot.type==="script"){
-      contentFrame.src = slot.url;
-    } else if(slot.type==="youtube"){
-      window.open(slot.url,"_blank");
-    }
-  };
-  menu.appendChild(div);
+function enter(type){
+current = type;
+document.getElementById("start").style.display="none";
+document.getElementById("dashboard").style.display="flex";
+document.getElementById("title").innerText=config[type].title;
+showScript();
+}
+
+function showScript(){
+mainContent.innerHTML=`<iframe src="${config[current].script}"></iframe>`;
+}
+
+function openYT(){
+window.open(config[current].yt,"_blank");
+}
+
+/* GALLERY */
+function showGallery(){
+const key="gallery_"+current;
+const images=JSON.parse(localStorage.getItem(key)||"[]");
+
+let html=`<button class="upload-btn" onclick="uploadImage()">Kép feltöltése</button>`;
+html+=`<div class="gallery">`;
+
+images.forEach(img=>{
+html+=`<img src="${img}">`;
 });
+
+html+=`</div>`;
+mainContent.innerHTML=html;
+}
+
+function uploadImage(){
+const input=document.createElement("input");
+input.type="file";
+input.accept="image/*";
+
+input.onchange=e=>{
+const file=e.target.files[0];
+const reader=new FileReader();
+
+reader.onload=function(){
+const key="gallery_"+current;
+const images=JSON.parse(localStorage.getItem(key)||"[]");
+images.push(reader.result);
+localStorage.setItem(key,JSON.stringify(images));
+showGallery();
+};
+
+reader.readAsDataURL(file);
+};
+
+input.click();
+}
 </script>
 
 </body>
