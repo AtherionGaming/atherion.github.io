@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>Atherion Script Dashboard</title>
+
+<style>
+body {
+    background: radial-gradient(circle, #0f172a, #020617);
+    font-family: Arial;
+    color: #e5e7eb;
+    text-align: center;
+}
+
+/* cím */
+h1 {
+    margin-top: 30px;
+    color: #22d3ee;
+    text-shadow: 0 0 15px #22d3ee;
+}
+
+/* inventory grid */
+.inventory {
+    width: 720px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+}
+
+/* slot */
+.slot {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(145deg,#111827,#030712);
+    border: 2px solid #334155;
+    border-radius: 10px;
+    box-shadow:
+        inset 0 0 10px #000,
+        0 0 8px rgba(0,255,255,0.2);
+    transition: 0.2s;
+    position: relative;
+}
+
+/* hover effect */
+.slot:hover {
+    border-color: #22d3ee;
+    box-shadow:
+        0 0 15px #22d3ee,
+        inset 0 0 10px #000;
+}
+
+/* script iframe */
+.slot iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+}
+
+/* label */
+.slot span {
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.footer {
+    margin-top: 40px;
+    opacity: 0.6;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Metin2 Script Inventory</h1>
+
+<div class="inventory">
+
+<!-- SCRIPT SLOT 1 -->
+<div class="slot">
+<iframe src="SCRIPT_URL_1"></iframe>
+<span>Script 1</span>
+</div>
+
+<!-- SCRIPT SLOT 2 -->
+<div class="slot">
+<iframe src="SCRIPT_URL_2"></iframe>
+<span>Script 2</span>
+</div>
+
+<!-- SCRIPT SLOT 3 -->
+<div class="slot">
+<iframe src="SCRIPT_URL_3"></iframe>
+<span>Script 3</span>
+</div>
+
+<!-- ÜRES HELYEK BŐVÍTÉSHEZ -->
+<div class="slot"></div>
+<div class="slot"></div>
+<div class="slot"></div>
+
+<div class="slot"></div>
+<div class="slot"></div>
+<div class="slot"></div>
+
+</div>
+
+<div class="footer">
+Atherion Tools System
+</div>
+
+</body>
+</html>
