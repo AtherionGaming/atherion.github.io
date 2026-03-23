@@ -94,7 +94,10 @@ function loadMenu(){
 const galBtn=document.createElement("div");
 galBtn.className="menu-slot";
 galBtn.textContent="Galéria";
-galBtn.onclick=()=>{window.location.href='https://atheriongaming.github.io/gallery/';};
+// current alapján a szerver nevet is átadjuk URL paraméterként
+galBtn.onclick = () => {
+    window.location.href = 'https://atheriongaming.github.io/gallery/?server=' + current;
+};
 menu.appendChild(galBtn);
 }
 </script>
