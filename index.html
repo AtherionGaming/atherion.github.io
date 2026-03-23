@@ -11,17 +11,24 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 .dashboard{display:none;height:100vh;flex-direction:column;}
 .dashboard-body{display:flex;flex:1;}
 .menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:10px;}
-.menu-slot{padding:12px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;}
+.menu-slot{padding:14px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;font-size:16px;}
 .menu-slot:hover{box-shadow:0 0 20px #00cfff;}
-.content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,150px);gap:15px;margin-top:20px;}
-.gallery img{width:150px;height:150px;object-fit:cover;border-radius:8px;border:2px solid #00cfff;}
-.upload-form{display:flex;flex-direction:column;gap:10px;width:300px;}
-.upload-form input, .upload-form button{padding:8px;border-radius:6px;border:2px solid #00cfff;background:#001a26;color:#00eaff;font-family:'Cinzel';}
+.content{flex:1;background:rgba(0,0,0,0.6);padding:20px;overflow:auto;border-radius:10px;margin-left:10px;}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:15px;margin-top:20px;}
+.gallery img{width:100%;height:150px;object-fit:cover;border-radius:8px;border:2px solid #00cfff;}
+.upload-form{display:flex;flex-direction:column;gap:10px;width:100%;max-width:350px;}
+.upload-form input, .upload-form button{padding:10px;border-radius:6px;border:2px solid #00cfff;background:#001a26;color:#00eaff;font-family:'Cinzel';font-size:16px;}
 .upload-form button{cursor:pointer;}
-.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:60px;background:rgba(0,0,0,0.7);}
-.start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
+.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:30px;background:rgba(0,0,0,0.7);flex-direction:column;}
+.start-btn{padding:20px 40px;font-size:24px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
 .start-btn:hover{transform:scale(1.1);box-shadow:0 0 40px #00cfff;}
+@media(max-width:768px){
+  .dashboard-body{flex-direction:column;}
+  .menu{width:100%;flex-direction:row;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+  .menu-slot{flex:1;}
+  .content{margin-left:0;}
+  .gallery img{height:120px;}
+}
 </style>
 </head>
 <body>
@@ -42,22 +49,13 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 <script>
 // --- Supabase inicializálás ---
 const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA;
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8X8WraKPYT5DuslIUag-PM8zI14l0JA";
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-// --- Alap config ---
 let current="";
 const config={
-  magic:{
-    title:"Magic Time Two",
-    scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
-    yt:"https://www.youtube.com/@atheriongames8520"
-  },
-  mystic:{
-    title:"Mystic of Masters",
-    scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
-    yt:"https://www.youtube.com/@AndurilMysticofMasters"
-  }
+  magic:{title:"Magic Time Two",scripts:[{name:"Eventek",url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],yt:"https://www.youtube.com/@atheriongames8520"},
+  mystic:{title:"Mystic of Masters",scripts:[{name:"Metin Spawn",url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],yt:"https://www.youtube.com/@AndurilMysticofMasters"}
 };
 
 function enter(type){
@@ -85,7 +83,6 @@ function loadMenu(){
   back.onclick=goBack;
   menu.appendChild(back);
 
-  // Script gombok
   config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
@@ -94,21 +91,18 @@ function loadMenu(){
     menu.appendChild(div);
   });
 
-  // YouTube
   const ytBtn=document.createElement("div");
   ytBtn.className="menu-slot";
   ytBtn.textContent="YouTube";
   ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
   menu.appendChild(ytBtn);
 
-  // Galéria
   const galBtn=document.createElement("div");
   galBtn.className="menu-slot";
   galBtn.textContent="Galéria";
   galBtn.onclick=showGallery;
   menu.appendChild(galBtn);
 
-  // Feltöltés
   const upBtn=document.createElement("div");
   upBtn.className="menu-slot";
   upBtn.textContent="Feltöltés";
@@ -149,14 +143,11 @@ async function uploadImageSupabase(){
   const dateInput=document.getElementById("uploadDate").value;
   const nameInput=document.getElementById("uploaderName").value;
   if(!fileInput.files[0] || !dateInput || !nameInput){alert("Tölts ki minden mezőt!"); return;}
-
   const file=fileInput.files[0];
   const fileName=Date.now()+"_"+file.name;
-  const folder=current; // Magic/Mystic mappa
-
+  const folder=current;
   const {data,error}=await supabase.storage.from('gallery').upload(`${folder}/${fileName}`, file);
   if(error){alert("Hiba a feltöltés során!"); console.error(error); return;}
-
   alert("Feltöltés sikeres!");
   showGallery();
 }
