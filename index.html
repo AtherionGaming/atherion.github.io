@@ -15,22 +15,59 @@ body{
     background-position:center;
     background-attachment:fixed;
     color:#fff;
+    display:flex;
 }
+/* BAL MENÜ */
+.menu{
+    width:180px;
+    background:rgba(0,0,0,0.7);
+    padding:20px 10px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+.menu-slot{
+    background:linear-gradient(145deg,#1a1a1a,#050505);
+    border:2px solid #3a6f9e;
+    border-radius:10px;
+    padding:10px;
+    text-align:center;
+    color:#00cfff;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    position:relative;
+    font-family: 'Cinzel', serif;
+    text-shadow: 0 0 3px #00aaff, 0 0 6px #00cfff;
+}
+.menu-slot:hover{
+    animation: blueFlame 1s infinite alternate;
+}
+@keyframes blueFlame{
+    0%{text-shadow: 0 0 5px #00cfff, 0 0 10px #00aaff, 0 0 15px #0077ff;}
+    50%{text-shadow: 0 0 10px #00e5ff, 0 0 15px #00bfff, 0 0 25px #0099ff;}
+    100%{text-shadow: 0 0 5px #00cfff, 0 0 10px #00aaff, 0 0 15px #0077ff;}
+}
+
+/* JOBB OLDAL (tartalom) */
 .overlay{
+    flex:1;
     background:rgba(0,0,0,0.65);
     min-height:100vh;
     padding-bottom:50px;
+    padding-left:20px;
 }
+
+/* HEADER */
 .header{
     text-align:center;
     padding-top:40px;
-    animation: glow 3s infinite alternate;
 }
 .header h1{
     font-family: 'Cinzel', serif;
-    font-size:72px; /* nagyobb, hogy láthatóbb legyen */
+    font-size:72px;
     letter-spacing:3px;
-    color:#00cfff; /* alap fényes kék */
+    color:#00cfff;
     text-shadow:
         0 0 5px #00cfff,
         0 0 10px #00bfff,
@@ -63,10 +100,8 @@ body{
         0 0 100px #009fff;
     }
 }
-@keyframes glow{
-from{opacity:0.85}
-to{opacity:1}
-}
+
+/* INVENTORY STÍLUS (SCRIPT + YOUTUBE) */
 .inventory-scripts, .inventory-youtube{
     width:90%;
     max-width:960px;
@@ -77,21 +112,20 @@ to{opacity:1}
 }
 .slot{
     background:linear-gradient(145deg,#1a1a1a,#050505);
-    border:2px solid #6b4b1d;
+    border:2px solid #3a6f9e;
     border-radius:12px;
     padding:10px;
     text-align:center;
     transition:0.25s;
     cursor:pointer;
     position:relative;
-    animation: fadeIn 0.6s ease forwards;
 }
 .slot:hover{
     transform:scale(1.1);
     box-shadow:
-        0 0 20px #5f6670,
-        0 0 40px rgba(176,196,222,0.5),
-        0 0 60px rgba(47,58,68,0.3);
+        0 0 20px #00cfff,
+        0 0 40px rgba(0,196,255,0.5),
+        0 0 60px rgba(0,180,255,0.3);
 }
 .icon{
     width:64px;
@@ -108,20 +142,9 @@ to{opacity:1}
 }
 .title{
     font-size:14px;
-    color:#b0c4de;
+    color:#00cfff;
     font-weight:bold;
     text-shadow: 0 0 4px #222;
-}
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(15px)}
-to{opacity:1; transform:translateY(0)}
-}
-.footer{
-    text-align:center;
-    margin-top:40px;
-    opacity:0.7;
-    font-size:14px;
-    display:none; /* eltüntettük */
 }
 /* Tooltip */
 .slot::after{
@@ -146,6 +169,11 @@ to{opacity:1; transform:translateY(0)}
 </style>
 </head>
 <body>
+
+<!-- BAL MENÜ -->
+<div class="menu" id="menu"></div>
+
+<!-- JOBB OLDAL -->
 <div class="overlay">
 <div class="header">
 <h1>Atherion Gaming</h1>
@@ -157,7 +185,33 @@ to{opacity:1; transform:translateY(0)}
 <!-- YouTube csatornák -->
 <div id="inventory-youtube" class="inventory-youtube"></div>
 
+</div>
+
 <script>
+/* MENÜ CONFIG */
+const menuSlots = [
+    {name:"Név1", url:"#"},
+    {name:"Név2", url:"#"},
+    {name:"Név3", url:"#"},
+    {name:"Név4", url:"#"},
+    {name:"Név5", url:"#"},
+    {name:"Név6", url:"#"},
+    {name:"Név7", url:"#"},
+    {name:"Név8", url:"#"},
+    {name:"Név9", url:"#"},
+    {name:"Név10", url:"#"}
+];
+
+const menu = document.getElementById("menu");
+menuSlots.forEach(slot=>{
+    const div = document.createElement("div");
+    div.className="menu-slot";
+    div.textContent = slot.name;
+    div.onclick = ()=>{window.open(slot.url,"_blank");};
+    menu.appendChild(div);
+});
+
+/* SCRIPT CONFIG */
 const scripts = [
   {title: "Magic Time Two", url: "https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec", icon: "https://yt3.googleusercontent.com/ytc/AIdro_nf9XJtTfezgZuCM980nW2mfbJqcw_d7NsULkRGXu8-PA=s900-c-k-c0x00ffffff-no-rj"},
   {title: "Mystic of Masters", url: "https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec", icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHEq6eoNv8-FCY7wXczFQ3CFu-4qFkE27vuw&s"}
