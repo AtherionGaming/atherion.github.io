@@ -5,7 +5,6 @@
 <title>Atherion Gaming</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <style>
@@ -39,7 +38,7 @@ flex:1;
 
 .menu{
 width:220px;
-background:rgba(0,0,0,0.8);
+background:rgba(0,0,0,0.85);
 padding:20px;
 display:flex;
 flex-direction:column;
@@ -55,11 +54,11 @@ cursor:pointer;
 font-family:'Cinzel';
 color:#00cfff;
 background:#070d14;
-transition:0.3s;
+transition:0.25s;
 }
 
 .menu-slot:hover{
-box-shadow:0 0 20px #00cfff;
+box-shadow:0 0 18px #00cfff;
 }
 
 .content{
@@ -75,7 +74,6 @@ margin-left:10px;
 display:grid;
 grid-template-columns:repeat(auto-fill,150px);
 gap:15px;
-margin-top:20px;
 }
 
 .gallery img{
@@ -84,23 +82,6 @@ height:150px;
 object-fit:cover;
 border-radius:8px;
 border:2px solid #00cfff;
-}
-
-.upload-form{
-display:flex;
-flex-direction:column;
-gap:10px;
-width:300px;
-}
-
-.upload-form input,
-.upload-form button{
-padding:8px;
-border-radius:6px;
-border:2px solid #00cfff;
-background:#001a26;
-color:#00eaff;
-font-family:'Cinzel';
 }
 
 .start-screen{
@@ -121,7 +102,13 @@ background:linear-gradient(#0b1a2a,#02060c);
 color:#00eaff;
 cursor:pointer;
 border-radius:12px;
-transition:0.3s;
+}
+
+.upload-form{
+display:flex;
+flex-direction:column;
+gap:10px;
+width:300px;
 }
 </style>
 </head>
@@ -144,12 +131,12 @@ transition:0.3s;
 
 <script>
 
-/* SUPABASE CONFIG */
+/* SUPABASE */
 const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
-const supabaseKey = "sb_publishable_WlXi3AVW5wKWUwvNSG2ffA_lOnWtL8X";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA";
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-/* SCRIPT CONFIG */
+/* SCRIPT LINK */
 const config = {
 magic:{
 script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
@@ -164,6 +151,7 @@ yt:"https://www.youtube.com/@AndurilMysticofMasters"
 let current="";
 const mainContent=document.getElementById("mainContent");
 
+/* SERVER SELECT */
 function enter(type){
 current=type;
 document.getElementById("start").style.display="none";
@@ -171,9 +159,10 @@ document.getElementById("dashboard").style.display="flex";
 loadMenu();
 }
 
+/* BACK */
 function goBack(){
-document.getElementById("start").style.display="flex";
 document.getElementById("dashboard").style.display="none";
+document.getElementById("start").style.display="flex";
 }
 
 /* MENU */
@@ -204,9 +193,12 @@ div.onclick=action;
 menu.appendChild(div);
 }
 
-/* GALÉRIA */
+/* GALERIA */
 async function showGallery(){
-const { data } = await supabase
+
+mainContent.innerHTML="Betöltés...";
+
+const { data, error } = await supabase
 .from("images")
 .select("*")
 .eq("server", current);
@@ -218,10 +210,11 @@ html+=`<img src="${img.url}">`;
 });
 
 html+=`</div>`;
+
 mainContent.innerHTML=html;
 }
 
-/* FELTÖLTÉS */
+/* FELTOLTÉS */
 function showUploadForm(){
 mainContent.innerHTML=`
 <div class="upload-form">
@@ -234,9 +227,15 @@ mainContent.innerHTML=`
 }
 
 async function uploadImage(){
+
 const file=document.getElementById("imgInput").files[0];
 const date=document.getElementById("uploadDate").value;
 const name=document.getElementById("uploaderName").value;
+
+if(!file || !date || !name){
+alert("Tölts ki minden mezőt");
+return;
+}
 
 const fileName=Date.now()+"_"+file.name;
 
@@ -257,7 +256,7 @@ uploader:name,
 date:date
 });
 
-alert("Feltöltve!");
+alert("Kép feltöltve!");
 }
 
 </script>
