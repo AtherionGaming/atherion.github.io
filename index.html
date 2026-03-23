@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Atherion Gaming</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
 .header{text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
@@ -39,18 +40,24 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 </div>
 
 <script>
+// --- Supabase inicializálás ---
+const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA;
+const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+// --- Alap config ---
 let current="";
 const config={
-magic:{
-  title:"Magic Time Two",
-  scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
-  yt:"https://www.youtube.com/@atheriongames8520"
-},
-mystic:{
-  title:"Mystic of Masters",
-  scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
-  yt:"https://www.youtube.com/@AndurilMysticofMasters"
-}
+  magic:{
+    title:"Magic Time Two",
+    scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
+    yt:"https://www.youtube.com/@atheriongames8520"
+  },
+  mystic:{
+    title:"Mystic of Masters",
+    scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
+    yt:"https://www.youtube.com/@AndurilMysticofMasters"
+  }
 };
 
 function enter(type){
@@ -67,19 +74,18 @@ function goBack(){
   current="";
 }
 
-// MENU
+// --- MENU ---
 function loadMenu(){
   const menu=document.getElementById("menu");
   menu.innerHTML="";
 
-  // 0. vissza gomb
   const back=document.createElement("div");
   back.className="menu-slot";
   back.textContent="Vissza";
   back.onclick=goBack;
   menu.appendChild(back);
 
-  // Script gombok (csak a megfelelő szekcióhoz)
+  // Script gombok
   config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
@@ -88,21 +94,21 @@ function loadMenu(){
     menu.appendChild(div);
   });
 
-  // YouTube gomb
+  // YouTube
   const ytBtn=document.createElement("div");
   ytBtn.className="menu-slot";
   ytBtn.textContent="YouTube";
   ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
   menu.appendChild(ytBtn);
 
-  // Galéria menüpont (csak megjelenítés, **nincs feltöltés**)
+  // Galéria
   const galBtn=document.createElement("div");
   galBtn.className="menu-slot";
   galBtn.textContent="Galéria";
   galBtn.onclick=showGallery;
   menu.appendChild(galBtn);
 
-  // Feltöltés menüpont (külön)
+  // Feltöltés
   const upBtn=document.createElement("div");
   upBtn.className="menu-slot";
   upBtn.textContent="Feltöltés";
@@ -110,18 +116,22 @@ function loadMenu(){
   menu.appendChild(upBtn);
 }
 
-// GALÉRIA (csak képek)
+// --- GALÉRIA Supabase ---
 const mainContent=document.getElementById("mainContent");
-function showGallery(){
-  const key="gallery_"+current;
-  let images=JSON.parse(localStorage.getItem(key)||"[]");
-  let html=`<div class="gallery">`;
-  images.forEach(img=>{html+=`<img src="${img.url}">`;});
-  html+=`</div>`;
+async function showGallery(){
+  mainContent.innerHTML="<p>Betöltés...</p>";
+  let {data,error}=await supabase.storage.from('gallery').list(current);
+  if(error){mainContent.innerHTML="<p>Hiba történt!</p>"; console.error(error); return;}
+  let html='<div class="gallery">';
+  for(let img of data){
+    const urlData = supabase.storage.from('gallery').getPublicUrl(`${current}/${img.name}`);
+    html+=`<img src="${urlData.data.publicUrl}">`;
+  }
+  html+="</div>";
   mainContent.innerHTML=html;
 }
 
-// FELTÖLTÉS űrlap
+// --- FELTÖLTÉS Supabase ---
 function showUploadForm(){
   mainContent.innerHTML=`<form class="upload-form">
     <label>Kép kiválasztása:</label>
@@ -130,21 +140,24 @@ function showUploadForm(){
     <input type="date" id="uploadDate" required>
     <label>Feltöltő neve:</label>
     <input type="text" id="uploaderName" required>
-    <button type="button" onclick="uploadImageForm()">Feltöltés</button>
+    <button type="button" onclick="uploadImageSupabase()">Feltöltés</button>
   </form>`;
 }
 
-function uploadImageForm(){
+async function uploadImageSupabase(){
   const fileInput=document.getElementById("imgInput");
   const dateInput=document.getElementById("uploadDate").value;
   const nameInput=document.getElementById("uploaderName").value;
   if(!fileInput.files[0] || !dateInput || !nameInput){alert("Tölts ki minden mezőt!"); return;}
 
-  const file=URL.createObjectURL(fileInput.files[0]);
-  const key="gallery_"+current;
-  let images=JSON.parse(localStorage.getItem(key)||"[]");
-  images.push({url:file,date:dateInput,uploader:nameInput});
-  localStorage.setItem(key,JSON.stringify(images));
+  const file=fileInput.files[0];
+  const fileName=Date.now()+"_"+file.name;
+  const folder=current; // Magic/Mystic mappa
+
+  const {data,error}=await supabase.storage.from('gallery').upload(`${folder}/${fileName}`, file);
+  if(error){alert("Hiba a feltöltés során!"); console.error(error); return;}
+
+  alert("Feltöltés sikeres!");
   showGallery();
 }
 </script>
