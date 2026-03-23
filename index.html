@@ -6,7 +6,8 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
-<script src="https://unpkg.com/@supabase/supabase-js@2.29.0/dist/supabase.min.js"></script>
+<!-- Supabase böngésző CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0/dist/supabase.min.js"></script>
 
 <style>
 body{
@@ -53,7 +54,7 @@ body{
   cursor:pointer;
   font-family:'Cinzel';
   color:#00cfff;
-  background:#070d14;
+  background:#07060c;
   transition:0.2s;
 }
 .menu-slot:hover{
@@ -102,7 +103,6 @@ body{
 }
 </style>
 </head>
-
 <body>
 
 <div class="start-screen" id="start">
@@ -124,7 +124,7 @@ body{
 const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA";
 
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = Supabase.createClient(supabaseUrl, supabaseKey);
 
 let currentServer = "";
 
@@ -147,13 +147,13 @@ function enterServer(type){
   loadMenu();
 }
 
-// Vissza a start képernyőre
+// Vissza
 function goBack(){
   document.getElementById("dashboard").style.display="none";
   document.getElementById("start").style.display="flex";
 }
 
-// Menü betöltése
+// Menü
 function loadMenu(){
   const menu = document.getElementById("menu");
   menu.innerHTML="";
@@ -173,7 +173,6 @@ function loadMenu(){
   addMenu("Feltöltés",showUploadForm);
 }
 
-// Menü gomb generálás
 function addMenu(name,action){
   const btn = document.createElement("div");
   btn.className="menu-slot";
@@ -182,10 +181,9 @@ function addMenu(name,action){
   document.getElementById("menu").appendChild(btn);
 }
 
-// Galéria betöltése Supabase-ből
+// Galéria
 async function showGallery(){
   mainContent.innerHTML="Betöltés...";
-
   const { data, error } = await supabaseClient
     .from("images")
     .select("*")
@@ -201,7 +199,7 @@ async function showGallery(){
   mainContent.innerHTML = html;
 }
 
-// Feltöltés űrlap
+// Feltöltés
 function showUploadForm(){
   mainContent.innerHTML=`
     <input type="file" id="file"><br><br>
@@ -211,7 +209,7 @@ function showUploadForm(){
   `;
 }
 
-// Kép feltöltés Supabase-re
+// Kép feltöltés
 async function upload(){
   const file=document.getElementById("file").files[0];
   const date=document.getElementById("date").value;
