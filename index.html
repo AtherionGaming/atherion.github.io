@@ -53,7 +53,6 @@ function enter(type){
 current=type;
 document.getElementById("start").style.display="none";
 document.getElementById("dashboard").style.display="flex";
-document.getElementById("title")?.innerText=config[type].title;
 loadMenu();
 showScript();
 }
@@ -88,8 +87,8 @@ const mainContent=document.getElementById("mainContent");
 function showScript(){mainContent.innerHTML=`<iframe src="${config[current].script}"></iframe>`;}
 function openYT(){window.open(config[current].yt,"_blank");}
 
-// GALÉRIA (Imgur)
-async function showGallery(){
+// GALÉRIA (localStorage)
+function showGallery(){
 const key="gallery_"+current;
 let images=JSON.parse(localStorage.getItem(key)||"[]");
 let html=`<div class="gallery">`;
@@ -98,30 +97,18 @@ html+=`</div><button class="upload-btn" onclick="uploadImage()">Kép feltöltés
 mainContent.innerHTML=html;
 }
 
-// FELTÖLTÉS Imgur
-async function uploadImage(){
+// FELTÖLTÉS (csak localStorage)
+function uploadImage(){
 const input=document.createElement("input");
 input.type="file";
 input.accept="image/*";
-input.onchange=async e=>{
-const file=e.target.files[0];
-const form=new FormData();
-form.append("image",file);
-try{
-const res=await fetch("https://api.imgur.com/3/image",{
-method:"POST",
-headers:{Authorization:"Client-ID YOUR_IMGUR_CLIENT_ID"},
-body:form
-});
-const data=await res.json();
-if(data.success){
+input.onchange=e=>{
+const file=URL.createObjectURL(e.target.files[0]);
 const key="gallery_"+current;
 let images=JSON.parse(localStorage.getItem(key)||"[]");
-images.push(data.data.link);
+images.push(file);
 localStorage.setItem(key,JSON.stringify(images));
 showGallery();
-}
-}catch(err){alert("Hiba történt a feltöltés során!");}
 };
 input.click();
 }
