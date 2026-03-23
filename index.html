@@ -3,211 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <title>Atherion Gaming</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
-
 <style>
-body{
-    margin:0;
-    font-family:Arial;
-    background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');
-    background-size:cover;
-    background-position:center;
-    color:white;
-}
-
-/* START SCREEN */
-.start-screen{
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:60px;
-background:rgba(0,0,0,0.7);
-}
-
-.start-btn{
-padding:25px 50px;
-font-size:28px;
-font-family:'Cinzel';
-border:2px solid #00cfff;
-background:linear-gradient(#0b1a2a,#02060c);
-color:#00eaff;
-cursor:pointer;
-border-radius:12px;
-transition:0.3s;
-box-shadow:0 0 20px rgba(0,200,255,0.4);
-}
-
-.start-btn:hover{
-transform:scale(1.1);
-box-shadow:0 0 40px #00cfff;
-}
-
-/* DASHBOARD */
-.dashboard{
-display:none;
-height:100vh;
-flex-direction:column;
-}
-
-/* HEADER */
-.header{
-text-align:center;
-font-family:'Cinzel';
-font-size:60px;
-color:#00cfff;
-text-shadow:0 0 30px #00cfff;
-margin-bottom:10px;
-position:relative;
-}
-
-/* Vissza gomb */
-.back-btn{
-position:absolute;
-left:10px;
-top:10px;
-padding:10px 15px;
-background:#001a26;
-border:2px solid #00cfff;
-color:#00cfff;
-cursor:pointer;
-border-radius:8px;
-transition:0.3s;
-}
-.back-btn:hover{
-box-shadow:0 0 20px #00cfff;
-}
-
-/* DASHBOARD LAYOUT */
-.dashboard-body{
-display:flex;
-flex:1;
-}
-
-/* MENÜ */
-.menu{
-width:220px;
-background:rgba(0,0,0,0.8);
-padding:20px;
-display:flex;
-flex-direction:column;
-gap:15px;
-}
-
-.menu-slot{
-padding:12px;
-border:2px solid #3a6f9e;
-border-radius:8px;
-text-align:center;
-cursor:pointer;
-font-family:'Cinzel';
-color:#00cfff;
-background:#070d14;
-transition:0.3s;
-}
-
-.menu-slot:hover{
-box-shadow:0 0 20px #00cfff;
-}
-
-/* TARTALOM */
-.content{
-flex:1;
-background:rgba(0,0,0,0.6);
-padding:25px;
-overflow:auto;
-border-radius:10px;
-margin-left:10px;
-}
-
-/* IFRAME */
-iframe{
-width:100%;
-height:500px;
-border:none;
-border-radius:10px;
-}
-
-/* GALLERY */
-.gallery{
-display:grid;
-grid-template-columns:repeat(auto-fill,150px);
-gap:15px;
-margin-top:20px;
-}
-
-.gallery img{
-width:150px;
-height:150px;
-object-fit:cover;
-border-radius:8px;
-border:2px solid #00cfff;
-}
-
-.upload-btn{
-margin-top:15px;
-padding:10px 20px;
-background:#001a26;
-border:2px solid #00cfff;
-color:#00cfff;
-cursor:pointer;
-border-radius:8px;
-}
+body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
+.header{position:relative;text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
+.back-btn{position:absolute;left:10px;top:10px;padding:10px 15px;background:#001a26;border:2px solid #00cfff;color:#00cfff;cursor:pointer;border-radius:8px;transition:0.3s;}
+.back-btn:hover{box-shadow:0 0 20px #00cfff;}
+.dashboard{display:none;height:100vh;flex-direction:column;}
+.dashboard-body{display:flex;flex:1;}
+.menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:15px;}
+.menu-slot{padding:12px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;}
+.menu-slot:hover{box-shadow:0 0 20px #00cfff;}
+.content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;}
+iframe{width:100%;height:500px;border:none;border-radius:10px;}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,150px);gap:15px;margin-top:20px;}
+.gallery img{width:150px;height:150px;object-fit:cover;border-radius:8px;border:2px solid #00cfff;}
+.upload-btn{margin-top:15px;padding:10px 20px;background:#001a26;border:2px solid #00cfff;color:#00cfff;cursor:pointer;border-radius:8px;}
+.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:60px;background:rgba(0,0,0,0.7);}
+.start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
+.start-btn:hover{transform:scale(1.1);box-shadow:0 0 40px #00cfff;}
 </style>
 </head>
 <body>
 
-<!-- START -->
 <div class="start-screen" id="start">
 <button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
 <button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
 </div>
 
-<!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
-
 <div class="header">
 <div class="back-btn" onclick="goBack()">Vissza</div>
 Atherion Gaming
 </div>
-
 <div class="dashboard-body">
 <div class="menu" id="menu"></div>
-<div class="content">
-<div id="mainContent"></div>
+<div class="content" id="mainContent"></div>
 </div>
-</div>
-
 </div>
 
 <script>
-// CONFIG
 let current="";
 const config={
-magic:{
-title:"Magic Time Two",
-script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
-yt:"https://www.youtube.com/@atheriongames8520"
-},
-mystic:{
-title:"Mystic of Masters",
-script:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",
-yt:"https://www.youtube.com/@AndurilMysticofMasters"
-}
+magic:{title:"Magic Time Two",script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",yt:"https://www.youtube.com/@atheriongames8520"},
+mystic:{title:"Mystic of Masters",script:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",yt:"https://www.youtube.com/@AndurilMysticofMasters"}
 };
 
-// START SCREEN
 function enter(type){
 current=type;
 document.getElementById("start").style.display="none";
 document.getElementById("dashboard").style.display="flex";
-document.getElementById("title").innerText=config[type].title;
+document.getElementById("title")?.innerText=config[type].title;
 loadMenu();
 showScript();
 }
 
-// BACK BUTTON
 function goBack(){
 document.getElementById("start").style.display="flex";
 document.getElementById("dashboard").style.display="none";
@@ -218,14 +68,12 @@ current="";
 function loadMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
-
 const slots=[
 {name:"Script",action:showScript},
 {name:"YouTube",action:openYT},
 {name:"Galéria",action:showGallery},
 {name:"Feltöltés",action:uploadImage}
 ];
-
 slots.forEach(s=>{
 const div=document.createElement("div");
 div.className="menu-slot";
@@ -237,42 +85,43 @@ menu.appendChild(div);
 
 // SCRIPT
 const mainContent=document.getElementById("mainContent");
-function showScript(){
-mainContent.innerHTML=`<iframe src="${config[current].script}"></iframe>`;
-}
-function openYT(){
-window.open(config[current].yt,"_blank");
-}
+function showScript(){mainContent.innerHTML=`<iframe src="${config[current].script}"></iframe>`;}
+function openYT(){window.open(config[current].yt,"_blank");}
 
-// IMGUR GALÉRIA
-function showGallery(){
+// GALÉRIA (Imgur)
+async function showGallery(){
 const key="gallery_"+current;
-const images=JSON.parse(localStorage.getItem(key)||"[]");
-let html=`<button class="upload-btn" onclick="uploadImage()">Kép feltöltése</button>`;
-html+=`<div class="gallery">`;
-images.forEach(img=>{
-html+=`<img src="${img}">`;
-});
-html+=`</div>`;
+let images=JSON.parse(localStorage.getItem(key)||"[]");
+let html=`<div class="gallery">`;
+images.forEach(img=>{html+=`<img src="${img}">`;});
+html+=`</div><button class="upload-btn" onclick="uploadImage()">Kép feltöltése</button>`;
 mainContent.innerHTML=html;
 }
 
-// FELTÖLTÉS (Imgur API) – itt helyileg localStorage-ra mentjük
-function uploadImage(){
+// FELTÖLTÉS Imgur
+async function uploadImage(){
 const input=document.createElement("input");
 input.type="file";
 input.accept="image/*";
-input.onchange=e=>{
+input.onchange=async e=>{
 const file=e.target.files[0];
-const reader=new FileReader();
-reader.onload=function(){
+const form=new FormData();
+form.append("image",file);
+try{
+const res=await fetch("https://api.imgur.com/3/image",{
+method:"POST",
+headers:{Authorization:"Client-ID YOUR_IMGUR_CLIENT_ID"},
+body:form
+});
+const data=await res.json();
+if(data.success){
 const key="gallery_"+current;
-const images=JSON.parse(localStorage.getItem(key)||"[]");
-images.push(reader.result);
+let images=JSON.parse(localStorage.getItem(key)||"[]");
+images.push(data.data.link);
 localStorage.setItem(key,JSON.stringify(images));
 showGallery();
-};
-reader.readAsDataURL(file);
+}
+}catch(err){alert("Hiba történt a feltöltés során!");}
 };
 input.click();
 }
