@@ -90,16 +90,17 @@ function loadMenu(){
   ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
   menu.appendChild(ytBtn);
 
-  // Galéria menüpont (átirányít a külön gallery mappára)
-const galBtn=document.createElement("div");
-galBtn.className="menu-slot";
-galBtn.textContent="Galéria";
-// current alapján a szerver nevet is átadjuk URL paraméterként
-galBtn.onclick = () => {
-    window.location.href = 'https://atheriongaming.github.io/gallery/?server=' + current;
-};
-menu.appendChild(galBtn);
+  // Galéria menüpont (indexből átirányít)
+  const galBtn=document.createElement("div");
+  galBtn.className="menu-slot";
+  galBtn.textContent="Galéria";
+  galBtn.onclick = () => {
+      window.location.href = 'https://atheriongaming.github.io/gallery/?server=' + current;
+  };
+  menu.appendChild(galBtn);
 }
+
+const mainContent=document.getElementById("mainContent");
 </script>
 </body>
 </html>
