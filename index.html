@@ -9,7 +9,7 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 .header{position:relative;text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
 .dashboard{display:none;height:100vh;flex-direction:column;}
 .dashboard-body{display:flex;flex:1;}
-.menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:15px;}
+.menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:10px;}
 .menu-slot{padding:12px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;}
 .menu-slot:hover{box-shadow:0 0 20px #00cfff;}
 .content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;}
@@ -41,81 +41,94 @@ Atherion Gaming
 <script>
 let current="";
 const config={
-magic:{title:"Magic Time Two",script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",yt:"https://www.youtube.com/@atheriongames8520"},
-mystic:{title:"Mystic of Masters",script:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",yt:"https://www.youtube.com/@AndurilMysticofMasters"}
+magic:{
+  title:"Magic Time Two",
+  script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
+  yt:"https://www.youtube.com/@atheriongames8520"
+},
+mystic:{
+  title:"Mystic of Masters",
+  script:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",
+  yt:"https://www.youtube.com/@AndurilMysticofMasters"
+}
 };
 
 function enter(type){
-current=type;
-document.getElementById("start").style.display="none";
-document.getElementById("dashboard").style.display="flex";
-loadMenu();
-showScript();
+  current=type;
+  document.getElementById("start").style.display="none";
+  document.getElementById("dashboard").style.display="flex";
+  loadMenu();
+  showScript();
 }
 
 function goBack(){
-document.getElementById("start").style.display="flex";
-document.getElementById("dashboard").style.display="none";
-current="";
+  document.getElementById("start").style.display="flex";
+  document.getElementById("dashboard").style.display="none";
+  current="";
 }
 
 // MENU
 function loadMenu(){
-const menu=document.getElementById("menu");
-menu.innerHTML="";
+  const menu=document.getElementById("menu");
+  menu.innerHTML="";
 
-// 0. vissza gomb
-const back=document.createElement("div");
-back.className="menu-slot";
-back.textContent="Vissza";
-back.onclick=goBack;
-menu.appendChild(back);
+  // 0. vissza gomb
+  const back=document.createElement("div");
+  back.className="menu-slot";
+  back.textContent="Vissza";
+  back.onclick=goBack;
+  menu.appendChild(back);
 
-// többi slot
-const slots=[
-{name:"Script",action:showScript},
-{name:"YouTube",action:openYT},
-{name:"Galéria",action:showGallery},
-{name:"Feltöltés",action:uploadImage}
-];
-slots.forEach(s=>{
-const div=document.createElement("div");
-div.className="menu-slot";
-div.textContent=s.name;
-div.onclick=s.action;
-menu.appendChild(div);
-});
+  // Script link neve a szekcióhoz
+  const slots=[
+    {name: config[current].title, action: showScript},
+    {name:"YouTube",action: openYT},
+    {name:"Galéria",action: showGallery},
+    {name:"Feltöltés",action: uploadImage}
+  ];
+
+  slots.forEach(s=>{
+    const div=document.createElement("div");
+    div.className="menu-slot";
+    div.textContent=s.name;
+    div.onclick=s.action;
+    menu.appendChild(div);
+  });
 }
 
-// SCRIPT (csak link)
+// SCRIPT LINK
 const mainContent=document.getElementById("mainContent");
-function showScript(){mainContent.innerHTML=`<a href="${config[current].script}" target="_blank" style="color:#00eaff;font-size:18px;">${config[current].title} Script Link</a>`;}
+function showScript(){
+  mainContent.innerHTML=`<a href="${config[current].script}" target="_blank" style="color:#00eaff;font-size:18px;">${config[current].title} Script Link</a>`;
+}
+
+// YOUTUBE LINK
 function openYT(){window.open(config[current].yt,"_blank");}
 
 // GALÉRIA (localStorage)
 function showGallery(){
-const key="gallery_"+current;
-let images=JSON.parse(localStorage.getItem(key)||"[]");
-let html=`<div class="gallery">`;
-images.forEach(img=>{html+=`<img src="${img}">`;});
-html+=`</div><button class="upload-btn" onclick="uploadImage()">Kép feltöltése</button>`;
-mainContent.innerHTML=html;
+  const key="gallery_"+current;
+  let images=JSON.parse(localStorage.getItem(key)||"[]");
+  let html=`<div class="gallery">`;
+  images.forEach(img=>{html+=`<img src="${img}">`;});
+  html+=`</div><button class="upload-btn" onclick="uploadImage()">Kép feltöltése</button>`;
+  mainContent.innerHTML=html;
 }
 
-// FELTÖLTÉS (csak localStorage)
+// FELTÖLTÉS (localStorage)
 function uploadImage(){
-const input=document.createElement("input");
-input.type="file";
-input.accept="image/*";
-input.onchange=e=>{
-const file=URL.createObjectURL(e.target.files[0]);
-const key="gallery_"+current;
-let images=JSON.parse(localStorage.getItem(key)||"[]");
-images.push(file);
-localStorage.setItem(key,JSON.stringify(images));
-showGallery();
-};
-input.click();
+  const input=document.createElement("input");
+  input.type="file";
+  input.accept="image/*";
+  input.onchange=e=>{
+    const file=URL.createObjectURL(e.target.files[0]);
+    const key="gallery_"+current;
+    let images=JSON.parse(localStorage.getItem(key)||"[]");
+    images.push(file);
+    localStorage.setItem(key,JSON.stringify(images));
+    showGallery();
+  };
+  input.click();
 }
 </script>
 </body>
