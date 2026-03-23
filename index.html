@@ -2,89 +2,207 @@
 <html lang="hu">
 <head>
 <meta charset="UTF-8">
-<title>Atherion Gaming Chanel</title>
+<title>Atherion Gaming</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
+
 body{
-    background: radial-gradient(circle,#0f172a,#020617);
-    font-family: Arial;
-    color:white;
-    text-align:center;
+margin:0;
+font-family: Arial;
+color:white;
+background-image:url("BACKGROUND_IMAGE_URL");
+background-size:cover;
+background-position:center;
+background-attachment:fixed;
 }
 
-h1{
-    margin-top:30px;
-    color:#22d3ee;
-    text-shadow:0 0 15px #22d3ee;
+/* sötét overlay */
+.overlay{
+background:rgba(0,0,0,0.65);
+min-height:100vh;
+padding-bottom:50px;
+}
+
+/* cím */
+.header{
+text-align:center;
+padding-top:40px;
+animation: glow 3s infinite alternate;
+}
+
+.header h1{
+font-family: 'Cinzel', serif;
+font-size:48px;
+letter-spacing:3px;
+color:#ffd27a;
+text-shadow:
+0 0 10px #ffcc66,
+0 0 25px #ffb84d;
+}
+
+@keyframes glow{
+from{opacity:0.8}
+to{opacity:1}
 }
 
 /* inventory */
 .inventory{
-    width:500px;
-    margin:50px auto;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:20px;
+width:900px;
+margin:40px auto;
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
 }
 
-/* slot */
+/* item slot */
 .slot{
-    height:120px;
-    background:linear-gradient(145deg,#111827,#020617);
-    border:2px solid #334155;
-    border-radius:12px;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:0.2s;
+background:linear-gradient(145deg,#1a1a1a,#050505);
+border:2px solid #6b4b1d;
+border-radius:10px;
+padding:10px;
+text-align:center;
+transition:0.25s;
+cursor:pointer;
+animation: fadeIn 0.6s ease forwards;
 }
 
 .slot:hover{
-    border-color:#22d3ee;
-    box-shadow:0 0 20px #22d3ee;
-    transform:scale(1.05);
+transform:scale(1.07);
+box-shadow:
+0 0 20px #ffc266,
+0 0 40px rgba(255,180,80,0.5);
+}
+
+/* ikon */
+.icon{
+width:64px;
+height:64px;
+margin:auto;
+background-size:cover;
+background-position:center;
+border-radius:6px;
+margin-bottom:10px;
+}
+
+/* cím */
+.title{
+font-size:14px;
+color:#ffd27a;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(15px)}
+to{opacity:1; transform:translateY(0)}
 }
 
 .footer{
-    margin-top:40px;
-    opacity:0.6;
+text-align:center;
+margin-top:40px;
+opacity:0.7;
 }
+
 </style>
 </head>
 
 <body>
 
-<h1>Metin2 Script Inventory</h1>
+<div class="overlay">
 
-<div class="inventory">
-
-<div class="slot" onclick="openScript(1)">
-Script 1
+<div class="header">
+<h1>Atherion Gaming</h1>
 </div>
 
-<div class="slot" onclick="openScript(2)">
-Script 2
-</div>
-
-</div>
+<div id="inventory" class="inventory"></div>
 
 <div class="footer">
-Atherion Tools System
+Metin2 Event Dashboard
+</div>
+
 </div>
 
 <script>
-function openScript(n){
 
-if(n===1){
-window.open("https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec","_blank");
+/* ================================
+SCRIPT CONFIG
+ITT SZERKESZTED A SCRIPTEKET
+================================ */
+
+const scripts = [
+
+{
+title: "Event Timer",
+url: "https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
+icon: "ICON_1_URL"
+},
+
+{
+title: "Boss Timer",
+url: "https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",
+icon: "ICON_2_URL"
+},
+
+/* ÚJ HELYEK */
+
+{
+title: "",
+url: "",
+icon: ""
+},
+
+{
+title: "",
+url: "",
+icon: ""
+},
+
+{
+title: "",
+url: "",
+icon: ""
+},
+
+{
+title: "",
+url: "",
+icon: ""
+},
+
+{
+title: "",
+url: "",
+icon: ""
 }
 
-if(n===2){
-window.open("https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec","_blank");
-}
+];
+
+/* ================================ */
+
+const inventory = document.getElementById("inventory");
+
+scripts.forEach(script => {
+
+if(script.url !== ""){
+
+const slot = document.createElement("div");
+slot.className = "slot";
+
+slot.onclick = () => {
+window.open(script.url, "_blank");
+};
+
+slot.innerHTML = `
+<div class="icon" style="background-image:url('${script.icon}')"></div>
+<div class="title">${script.title}</div>
+`;
+
+inventory.appendChild(slot);
 
 }
+
+});
+
 </script>
 
 </body>
