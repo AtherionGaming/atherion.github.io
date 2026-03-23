@@ -83,13 +83,13 @@ h1 {
 
 <!-- SCRIPT SLOT 1 -->
 <div class="slot">
-<iframe src="SCRIPT_URL_1"></iframe>
+<iframe src="https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec "></iframe>
 <span>Script 1</span>
 </div>
 
 <!-- SCRIPT SLOT 2 -->
 <div class="slot">
-<iframe src="SCRIPT_URL_2"></iframe>
+<iframe src="https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec "></iframe>
 <span>Script 2</span>
 </div>
 
