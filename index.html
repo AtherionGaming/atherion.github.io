@@ -8,12 +8,12 @@
 
 <style>
 body{
-margin:0;
-font-family:Arial;
-background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');
-background-size:cover;
-background-position:center;
-color:white;
+    margin:0;
+    font-family:Arial;
+    background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');
+    background-size:cover;
+    background-position:center;
+    color:white;
 }
 
 /* START SCREEN */
@@ -48,8 +48,44 @@ box-shadow:0 0 40px #00cfff;
 .dashboard{
 display:none;
 height:100vh;
+flex-direction:column;
 }
 
+/* HEADER */
+.header{
+text-align:center;
+font-family:'Cinzel';
+font-size:60px;
+color:#00cfff;
+text-shadow:0 0 30px #00cfff;
+margin-bottom:10px;
+position:relative;
+}
+
+/* Vissza gomb */
+.back-btn{
+position:absolute;
+left:10px;
+top:10px;
+padding:10px 15px;
+background:#001a26;
+border:2px solid #00cfff;
+color:#00cfff;
+cursor:pointer;
+border-radius:8px;
+transition:0.3s;
+}
+.back-btn:hover{
+box-shadow:0 0 20px #00cfff;
+}
+
+/* DASHBOARD LAYOUT */
+.dashboard-body{
+display:flex;
+flex:1;
+}
+
+/* MENÜ */
 .menu{
 width:220px;
 background:rgba(0,0,0,0.8);
@@ -75,22 +111,17 @@ transition:0.3s;
 box-shadow:0 0 20px #00cfff;
 }
 
+/* TARTALOM */
 .content{
 flex:1;
 background:rgba(0,0,0,0.6);
 padding:25px;
 overflow:auto;
+border-radius:10px;
+margin-left:10px;
 }
 
-.header{
-text-align:center;
-font-family:'Cinzel';
-font-size:60px;
-color:#00cfff;
-text-shadow:0 0 30px #00cfff;
-margin-bottom:20px;
-}
-
+/* IFRAME */
 iframe{
 width:100%;
 height:500px;
@@ -136,24 +167,24 @@ border-radius:8px;
 <!-- DASHBOARD -->
 <div class="dashboard" id="dashboard">
 
-<div class="menu">
-<div class="menu-slot" onclick="showScript()">Script</div>
-<div class="menu-slot" onclick="openYT()">YouTube</div>
-<div class="menu-slot" onclick="showGallery()">Galéria</div>
+<div class="header">
+<div class="back-btn" onclick="goBack()">Vissza</div>
+Atherion Gaming
 </div>
 
+<div class="dashboard-body">
+<div class="menu" id="menu"></div>
 <div class="content">
-<div class="header" id="title"></div>
 <div id="mainContent"></div>
+</div>
 </div>
 
 </div>
 
 <script>
-let current = "";
-
-/* CONFIG */
-const config = {
+// CONFIG
+let current="";
+const config={
 magic:{
 title:"Magic Time Two",
 script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
@@ -166,47 +197,74 @@ yt:"https://www.youtube.com/@AndurilMysticofMasters"
 }
 };
 
+// START SCREEN
 function enter(type){
-current = type;
+current=type;
 document.getElementById("start").style.display="none";
 document.getElementById("dashboard").style.display="flex";
 document.getElementById("title").innerText=config[type].title;
+loadMenu();
 showScript();
 }
 
+// BACK BUTTON
+function goBack(){
+document.getElementById("start").style.display="flex";
+document.getElementById("dashboard").style.display="none";
+current="";
+}
+
+// MENU
+function loadMenu(){
+const menu=document.getElementById("menu");
+menu.innerHTML="";
+
+const slots=[
+{name:"Script",action:showScript},
+{name:"YouTube",action:openYT},
+{name:"Galéria",action:showGallery},
+{name:"Feltöltés",action:uploadImage}
+];
+
+slots.forEach(s=>{
+const div=document.createElement("div");
+div.className="menu-slot";
+div.textContent=s.name;
+div.onclick=s.action;
+menu.appendChild(div);
+});
+}
+
+// SCRIPT
+const mainContent=document.getElementById("mainContent");
 function showScript(){
 mainContent.innerHTML=`<iframe src="${config[current].script}"></iframe>`;
 }
-
 function openYT(){
 window.open(config[current].yt,"_blank");
 }
 
-/* GALLERY */
+// IMGUR GALÉRIA
 function showGallery(){
 const key="gallery_"+current;
 const images=JSON.parse(localStorage.getItem(key)||"[]");
-
 let html=`<button class="upload-btn" onclick="uploadImage()">Kép feltöltése</button>`;
 html+=`<div class="gallery">`;
-
 images.forEach(img=>{
 html+=`<img src="${img}">`;
 });
-
 html+=`</div>`;
 mainContent.innerHTML=html;
 }
 
+// FELTÖLTÉS (Imgur API) – itt helyileg localStorage-ra mentjük
 function uploadImage(){
 const input=document.createElement("input");
 input.type="file";
 input.accept="image/*";
-
 input.onchange=e=>{
 const file=e.target.files[0];
 const reader=new FileReader();
-
 reader.onload=function(){
 const key="gallery_"+current;
 const images=JSON.parse(localStorage.getItem(key)||"[]");
@@ -214,13 +272,10 @@ images.push(reader.result);
 localStorage.setItem(key,JSON.stringify(images));
 showGallery();
 };
-
 reader.readAsDataURL(file);
 };
-
 input.click();
 }
 </script>
-
 </body>
 </html>
