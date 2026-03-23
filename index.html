@@ -21,7 +21,6 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 .start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:60px;background:rgba(0,0,0,0.7);}
 .start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
 .start-btn:hover{transform:scale(1.1);box-shadow:0 0 40px #00cfff;}
-.link-item{color:#00eaff;font-size:18px;text-decoration:underline;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -44,16 +43,12 @@ let current="";
 const config={
 magic:{
   title:"Magic Time Two",
-  scripts:[
-    {name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}
-  ],
+  scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
   yt:"https://www.youtube.com/@atheriongames8520"
 },
 mystic:{
   title:"Mystic of Masters",
-  scripts:[
-    {name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}
-  ],
+  scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
   yt:"https://www.youtube.com/@AndurilMysticofMasters"
 }
 };
@@ -84,7 +79,7 @@ function loadMenu(){
   back.onclick=goBack;
   menu.appendChild(back);
 
-  // Script gombok a megfelelő szekcióhoz
+  // Script gombok (csak a megfelelő szekcióhoz)
   config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
@@ -100,14 +95,14 @@ function loadMenu(){
   ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
   menu.appendChild(ytBtn);
 
-  // Galéria (feltöltés nélkül)
+  // Galéria menüpont (csak megjelenítés, **nincs feltöltés**)
   const galBtn=document.createElement("div");
   galBtn.className="menu-slot";
   galBtn.textContent="Galéria";
   galBtn.onclick=showGallery;
   menu.appendChild(galBtn);
 
-  // Feltöltés menü
+  // Feltöltés menüpont (külön)
   const upBtn=document.createElement("div");
   upBtn.className="menu-slot";
   upBtn.textContent="Feltöltés";
@@ -126,7 +121,7 @@ function showGallery(){
   mainContent.innerHTML=html;
 }
 
-// FELTÖLTÉS
+// FELTÖLTÉS űrlap
 function showUploadForm(){
   mainContent.innerHTML=`<form class="upload-form">
     <label>Kép kiválasztása:</label>
