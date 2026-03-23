@@ -28,16 +28,40 @@ body{
 }
 .header h1{
     font-family: 'Cinzel', serif;
-    font-size:56px;
+    font-size:72px; /* nagyobb, hogy láthatóbb legyen */
     letter-spacing:3px;
-    color:#b0c4de; /* hideg kékes-acél szín */
-    background: linear-gradient(90deg, #5f6670, #b0c4de, #2f3a44);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color:#00cfff; /* alap fényes kék */
     text-shadow:
-        0 0 5px #5f6670,
-        0 0 10px #b0c4de,
-        0 0 20px #2f3a44;
+        0 0 5px #00cfff,
+        0 0 10px #00bfff,
+        0 0 20px #00bfff,
+        0 0 30px #00aaff,
+        0 0 40px #0099ff,
+        0 0 50px #0088ff,
+        0 0 75px #0077ff;
+    animation: neonGlow 2s ease-in-out infinite alternate;
+}
+@keyframes neonGlow{
+    from {
+        text-shadow:
+        0 0 5px #00cfff,
+        0 0 10px #00bfff,
+        0 0 20px #00bfff,
+        0 0 30px #00aaff,
+        0 0 40px #0099ff,
+        0 0 50px #0088ff,
+        0 0 75px #0077ff;
+    }
+    to {
+        text-shadow:
+        0 0 10px #00e5ff,
+        0 0 20px #00dfff,
+        0 0 30px #00d0ff,
+        0 0 40px #00c5ff,
+        0 0 50px #00b8ff,
+        0 0 60px #00aaff,
+        0 0 100px #009fff;
+    }
 }
 @keyframes glow{
 from{opacity:0.85}
