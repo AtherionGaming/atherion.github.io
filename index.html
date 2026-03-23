@@ -5,43 +5,37 @@
 <title>Atherion Gaming</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <style>
-body{margin:0;font-family:Arial,sans-serif;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
-.header{text-align:center;font-family:'Cinzel';font-size:50px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
-.dashboard{display:none;flex-direction:column;height:100vh;}
-.dashboard-body{display:flex;flex:1;flex-direction:row;}
+body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
+.header{text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
+.dashboard{display:none;height:100vh;flex-direction:column;}
+.dashboard-body{display:flex;flex:1;}
 .menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:10px;}
 .menu-slot{padding:12px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;}
 .menu-slot:hover{box-shadow:0 0 20px #00cfff;}
 .content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:20px;}
-.gallery img{width:100%;height:120px;object-fit:cover;border-radius:6px;border:2px solid #00cfff;}
-.upload-form{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,150px);gap:15px;margin-top:20px;}
+.gallery img{width:150px;height:150px;object-fit:cover;border-radius:8px;border:2px solid #00cfff;}
+.upload-form{display:flex;flex-direction:column;gap:10px;width:300px;}
 .upload-form input, .upload-form button{padding:8px;border-radius:6px;border:2px solid #00cfff;background:#001a26;color:#00eaff;font-family:'Cinzel';}
 .upload-form button{cursor:pointer;}
-.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:40px;background:rgba(0,0,0,0.7);flex-wrap:wrap;}
-.start-btn{padding:20px 40px;font-size:22px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
-.start-btn:hover{transform:scale(1.05);box-shadow:0 0 40px #00cfff;}
-@media(max-width:600px){
-  .dashboard-body{flex-direction:column;}
-  .menu{width:100%;flex-direction:row;overflow-x:auto;padding:5px;gap:5px;}
-  .menu-slot{flex:1;white-space:nowrap;}
-  .content{margin-left:0;margin-top:10px;}
-}
+.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:60px;background:rgba(0,0,0,0.7);}
+.start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
+.start-btn:hover{transform:scale(1.1);box-shadow:0 0 40px #00cfff;}
 </style>
 </head>
 <body>
 
 <div class="start-screen" id="start">
-  <button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
-  <button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
+<button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
+<button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
 </div>
 
 <div class="dashboard" id="dashboard">
-  <div class="header">Atherion Gaming</div>
-  <div class="dashboard-body">
-    <div class="menu" id="menu"></div>
-    <div class="content" id="mainContent"></div>
-  </div>
+<div class="header">Atherion Gaming</div>
+<div class="dashboard-body">
+<div class="menu" id="menu"></div>
+<div class="content" id="mainContent"></div>
+</div>
 </div>
 
 <script>
@@ -73,36 +67,42 @@ function goBack(){
   current="";
 }
 
+// MENU
 function loadMenu(){
   const menu=document.getElementById("menu");
   menu.innerHTML="";
 
+  // 0. vissza gomb
   const back=document.createElement("div");
   back.className="menu-slot";
   back.textContent="Vissza";
   back.onclick=goBack;
   menu.appendChild(back);
 
+  // Script gombok a megfelelő szekcióhoz
   config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
     div.textContent=s.name;
-    div.onclick=()=>window.open(s.url,"_blank");
+    div.onclick=()=>{window.open(s.url,"_blank");};
     menu.appendChild(div);
   });
 
+  // YouTube gomb
   const ytBtn=document.createElement("div");
   ytBtn.className="menu-slot";
   ytBtn.textContent="YouTube";
-  ytBtn.onclick=()=>window.open(config[current].yt,"_blank");
+  ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
   menu.appendChild(ytBtn);
 
+  // Galéria (csak megjelenítés)
   const galBtn=document.createElement("div");
   galBtn.className="menu-slot";
   galBtn.textContent="Galéria";
   galBtn.onclick=showGallery;
   menu.appendChild(galBtn);
 
+  // Feltöltés menü
   const upBtn=document.createElement("div");
   upBtn.className="menu-slot";
   upBtn.textContent="Feltöltés";
@@ -110,6 +110,7 @@ function loadMenu(){
   menu.appendChild(upBtn);
 }
 
+// GALÉRIA (csak képek)
 const mainContent=document.getElementById("mainContent");
 function showGallery(){
   const key="gallery_"+current;
@@ -120,6 +121,7 @@ function showGallery(){
   mainContent.innerHTML=html;
 }
 
+// FELTÖLTÉS űrlap
 function showUploadForm(){
   mainContent.innerHTML=`<form class="upload-form">
     <label>Kép kiválasztása:</label>
