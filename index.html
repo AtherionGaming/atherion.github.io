@@ -6,7 +6,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 <style>
 body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
-.header{position:relative;text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
+.header{text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
 .dashboard{display:none;height:100vh;flex-direction:column;}
 .dashboard-body{display:flex;flex:1;}
 .menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:10px;}
@@ -19,6 +19,7 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 .start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:60px;background:rgba(0,0,0,0.7);}
 .start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
 .start-btn:hover{transform:scale(1.1);box-shadow:0 0 40px #00cfff;}
+.link-item{color:#00eaff;font-size:18px;text-decoration:underline;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -43,12 +44,18 @@ let current="";
 const config={
 magic:{
   title:"Magic Time Two",
-  script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
+  scripts:[
+    {name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"},
+    {name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}
+  ],
   yt:"https://www.youtube.com/@atheriongames8520"
 },
 mystic:{
   title:"Mystic of Masters",
-  script:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec",
+  scripts:[
+    {name:"Eventek", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"},
+    {name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}
+  ],
   yt:"https://www.youtube.com/@AndurilMysticofMasters"
 }
 };
@@ -58,7 +65,7 @@ function enter(type){
   document.getElementById("start").style.display="none";
   document.getElementById("dashboard").style.display="flex";
   loadMenu();
-  showScript();
+  showScriptLinks();
 }
 
 function goBack(){
@@ -72,40 +79,39 @@ function loadMenu(){
   const menu=document.getElementById("menu");
   menu.innerHTML="";
 
-  // 0. vissza gomb
+  // vissza gomb 0. slot
   const back=document.createElement("div");
   back.className="menu-slot";
   back.textContent="Vissza";
   back.onclick=goBack;
   menu.appendChild(back);
 
-  // Script link neve a szekcióhoz
-  const slots=[
-    {name: config[current].title, action: showScript},
-    {name:"YouTube",action: openYT},
-    {name:"Galéria",action: showGallery},
-    {name:"Feltöltés",action: uploadImage}
-  ];
-
-  slots.forEach(s=>{
+  // Script link gombok: Eventek, Metin Spawn
+  config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
     div.textContent=s.name;
-    div.onclick=s.action;
+    div.onclick=()=>{mainContent.innerHTML=`<a href="${s.url}" target="_blank" class="link-item">${s.name} Script Link</a>`;};
+    menu.appendChild(div);
+  });
+
+  // YouTube, Galéria, Feltöltés
+  const extra=[
+    {name:"YouTube", action:()=>{window.open(config[current].yt,"_blank");}},
+    {name:"Galéria", action:showGallery},
+    {name:"Feltöltés", action:uploadImage}
+  ];
+  extra.forEach(e=>{
+    const div=document.createElement("div");
+    div.className="menu-slot";
+    div.textContent=e.name;
+    div.onclick=e.action;
     menu.appendChild(div);
   });
 }
 
-// SCRIPT LINK
-const mainContent=document.getElementById("mainContent");
-function showScript(){
-  mainContent.innerHTML=`<a href="${config[current].script}" target="_blank" style="color:#00eaff;font-size:18px;">${config[current].title} Script Link</a>`;
-}
-
-// YOUTUBE LINK
-function openYT(){window.open(config[current].yt,"_blank");}
-
 // GALÉRIA (localStorage)
+const mainContent=document.getElementById("mainContent");
 function showGallery(){
   const key="gallery_"+current;
   let images=JSON.parse(localStorage.getItem(key)||"[]");
@@ -129,6 +135,13 @@ function uploadImage(){
     showGallery();
   };
   input.click();
+}
+
+// kezdeti script linkek
+function showScriptLinks(){
+  if(config[current].scripts.length>0){
+    mainContent.innerHTML=`<a href="${config[current].scripts[0].url}" target="_blank" class="link-item">${config[current].scripts[0].name} Script Link</a>`;
+  }
 }
 </script>
 </body>
