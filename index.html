@@ -3,104 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Atherion Gaming</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
-<!-- Supabase böngésző CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.29.0/dist/supabase.min.js"></script>
 
 <style>
-body{
-  margin:0;
-  font-family:Arial;
-  background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');
-  background-size:cover;
-  color:white;
-}
-
-.header{
-  text-align:center;
-  font-family:'Cinzel';
-  font-size:60px;
-  color:#00cfff;
-  text-shadow:0 0 30px #00cfff;
-}
-
-.dashboard{
-  display:none;
-  height:100vh;
-  flex-direction:column;
-}
-
-.dashboard-body{
-  display:flex;
-  flex:1;
-}
-
-.menu{
-  width:220px;
-  background:rgba(0,0,0,0.85);
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.menu-slot{
-  padding:12px;
-  border:2px solid #3a6f9e;
-  border-radius:8px;
-  text-align:center;
-  cursor:pointer;
-  font-family:'Cinzel';
-  color:#00cfff;
-  background:#07060c;
-  transition:0.2s;
-}
-.menu-slot:hover{
-  box-shadow:0 0 18px #00cfff;
-}
-
-.content{
-  flex:1;
-  background:rgba(0,0,0,0.6);
-  padding:25px;
-  overflow:auto;
-  border-radius:10px;
-  margin-left:10px;
-}
-
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,150px);
-  gap:15px;
-}
-.gallery img{
-  width:150px;
-  height:150px;
-  object-fit:cover;
-  border:2px solid #00cfff;
-  border-radius:8px;
-}
-
-.start-screen{
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:60px;
-  background:rgba(0,0,0,0.7);
-}
-
-.start-btn{
-  padding:25px 50px;
-  font-size:28px;
-  font-family:'Cinzel';
-  border:2px solid #00cfff;
-  background:#02060c;
-  color:#00eaff;
-  cursor:pointer;
-}
+body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
+.header{text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-top:20px;}
+.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:60px;background:rgba(0,0,0,0.7);}
+.start-btn{padding:25px 50px;font-size:28px;font-family:'Cinzel';border:2px solid #00cfff;background:#02060c;color:#00eaff;cursor:pointer;}
+.dashboard{display:none;height:100vh;flex-direction:column;}
+.dashboard-body{display:flex;flex:1;margin-top:20px;}
+.menu{width:220px;background:rgba(0,0,0,0.85);padding:20px;display:flex;flex-direction:column;gap:10px;}
+.menu-slot{padding:12px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#07060c;transition:0.2s;}
+.menu-slot:hover{box-shadow:0 0 18px #00cfff;}
+.content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,150px);gap:15px;}
+.gallery img{width:150px;height:150px;object-fit:cover;border:2px solid #00cfff;border-radius:8px;}
 </style>
 </head>
 <body>
@@ -112,7 +31,6 @@ body{
 
 <div class="dashboard" id="dashboard">
   <div class="header">Atherion Gaming</div>
-
   <div class="dashboard-body">
     <div class="menu" id="menu"></div>
     <div class="content" id="mainContent"></div>
@@ -120,11 +38,10 @@ body{
 </div>
 
 <script>
-// Supabase config
-const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA";
-
-const supabaseClient = Supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = Supabase.createClient(
+  "https://stdlzcitdmapnsulqmdi.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA"
+);
 
 let currentServer = "";
 
@@ -139,7 +56,6 @@ const config = {
   }
 };
 
-// Szerver választás
 function enterServer(type){
   currentServer = type;
   document.getElementById("start").style.display="none";
@@ -147,26 +63,18 @@ function enterServer(type){
   loadMenu();
 }
 
-// Vissza
 function goBack(){
   document.getElementById("dashboard").style.display="none";
   document.getElementById("start").style.display="flex";
 }
 
-// Menü
 function loadMenu(){
   const menu = document.getElementById("menu");
   menu.innerHTML="";
-
   addMenu("Vissza",goBack);
 
-  if(currentServer==="magic"){
-    addMenu("Eventek",()=>window.open(config.magic.script));
-  }
-
-  if(currentServer==="mystic"){
-    addMenu("Metin Spawn",()=>window.open(config.mystic.script));
-  }
+  if(currentServer==="magic") addMenu("Eventek",()=>window.open(config.magic.script));
+  if(currentServer==="mystic") addMenu("Metin Spawn",()=>window.open(config.mystic.script));
 
   addMenu("YouTube",()=>window.open(config[currentServer].yt));
   addMenu("Galéria",showGallery);
@@ -183,24 +91,19 @@ function addMenu(name,action){
 
 // Galéria
 async function showGallery(){
+  const mainContent = document.getElementById("mainContent");
   mainContent.innerHTML="Betöltés...";
-  const { data, error } = await supabaseClient
-    .from("images")
-    .select("*")
-    .eq("server", currentServer);
-
+  const { data, error } = await supabaseClient.from("images").select("*").eq("server", currentServer);
   if(error){ mainContent.innerHTML="Hiba a galéria betöltésénél"; return; }
-
   let html="<div class='gallery'>";
-  data.forEach(img=>{
-    html+=`<img src="${img.url}">`;
-  });
+  data.forEach(img=>{ html+=`<img src="${img.url}">`; });
   html+="</div>";
   mainContent.innerHTML = html;
 }
 
 // Feltöltés
 function showUploadForm(){
+  const mainContent = document.getElementById("mainContent");
   mainContent.innerHTML=`
     <input type="file" id="file"><br><br>
     <input type="date" id="date"><br><br>
@@ -209,27 +112,16 @@ function showUploadForm(){
   `;
 }
 
-// Kép feltöltés
+// Feltöltés Supabase-re
 async function upload(){
   const file=document.getElementById("file").files[0];
   const date=document.getElementById("date").value;
   const name=document.getElementById("name").value;
-
   if(!file || !date || !name){ alert("Tölts ki minden mezőt"); return; }
-
   const fileName = Date.now()+"_"+file.name;
-
   await supabaseClient.storage.from("gallery").upload(fileName,file);
-
   const { data } = supabaseClient.storage.from("gallery").getPublicUrl(fileName);
-
-  await supabaseClient.from("images").insert({
-    url:data.publicUrl,
-    server:currentServer,
-    uploader:name,
-    date:date
-  });
-
+  await supabaseClient.from("images").insert({ url:data.publicUrl, server:currentServer, uploader:name, date:date });
   alert("Kép feltöltve!");
 }
 </script>
