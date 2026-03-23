@@ -21,31 +21,31 @@ body{margin:0;font-family:Arial;background-image:url('https://metin2.download/pi
 <body>
 
 <div class="start-screen" id="start">
-<button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
-<button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
+  <button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
+  <button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
 </div>
 
 <div class="dashboard" id="dashboard">
-<div class="header">Atherion Gaming</div>
-<div class="dashboard-body">
-<div class="menu" id="menu"></div>
-<div class="content" id="mainContent"></div>
-</div>
+  <div class="header">Atherion Gaming</div>
+  <div class="dashboard-body">
+    <div class="menu" id="menu"></div>
+    <div class="content" id="mainContent"></div>
+  </div>
 </div>
 
 <script>
 let current="";
 const config={
-magic:{
-  title:"Magic Time Two",
-  scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
-  yt:"https://www.youtube.com/@atheriongames8520"
-},
-mystic:{
-  title:"Mystic of Masters",
-  scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
-  yt:"https://www.youtube.com/@AndurilMysticofMasters"
-}
+  magic:{
+    title:"Magic Time Two",
+    scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
+    yt:"https://www.youtube.com/@atheriongames8520"
+  },
+  mystic:{
+    title:"Mystic of Masters",
+    scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
+    yt:"https://www.youtube.com/@AndurilMysticofMasters"
+  }
 };
 
 function enter(type){
@@ -90,17 +90,13 @@ function loadMenu(){
   ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
   menu.appendChild(ytBtn);
 
-  // Galéria menüpont (indexből átirányít)
+  // Galéria gomb – átadja a szerver paramétert
   const galBtn=document.createElement("div");
   galBtn.className="menu-slot";
   galBtn.textContent="Galéria";
-  galBtn.onclick = () => {
-      window.location.href = 'https://atheriongaming.github.io/gallery/?server=' + current;
-  };
+  galBtn.onclick=()=>{ window.location.href=`https://atheriongaming.github.io/gallery/?server=${current}` };
   menu.appendChild(galBtn);
 }
-
-const mainContent=document.getElementById("mainContent");
 </script>
 </body>
 </html>
