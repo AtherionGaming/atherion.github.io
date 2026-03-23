@@ -4,56 +4,59 @@
 <meta charset="UTF-8">
 <title>Atherion Gaming</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.34.0/dist/supabase.min.js"></script>
 <style>
 body{margin:0;font-family:Arial;background-image:url('https://metin2.download/picture/UOIXWBG4d1PsC0Bjiga6EHj4c380szxg/.jpg');background-size:cover;color:white;}
-.header{text-align:center;font-family:'Cinzel';font-size:60px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
+.header{text-align:center;font-family:'Cinzel';font-size:50px;color:#00cfff;text-shadow:0 0 30px #00cfff;margin-bottom:10px;}
 .dashboard{display:none;height:100vh;flex-direction:column;}
-.dashboard-body{display:flex;flex:1;flex-wrap:wrap;}
-.menu{width:220px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:10px;}
+.dashboard-body{display:flex;flex:1;flex-direction:row;gap:10px;}
+.menu{width:200px;background:rgba(0,0,0,0.8);padding:20px;display:flex;flex-direction:column;gap:10px;}
 .menu-slot{padding:12px;border:2px solid #3a6f9e;border-radius:8px;text-align:center;cursor:pointer;font-family:'Cinzel';color:#00cfff;background:#070d14;transition:0.3s;}
 .menu-slot:hover{box-shadow:0 0 20px #00cfff;}
-.content{flex:1;background:rgba(0,0,0,0.6);padding:25px;overflow:auto;border-radius:10px;margin-left:10px;min-width:300px;}
-.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:20px;}
+.content{flex:1;background:rgba(0,0,0,0.6);padding:15px;overflow:auto;border-radius:10px;}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:10px;}
 .gallery img{width:100%;height:120px;object-fit:cover;border-radius:8px;border:2px solid #00cfff;}
-.upload-form{display:flex;flex-direction:column;gap:10px;width:100%;max-width:300px;}
+.upload-form{display:flex;flex-direction:column;gap:8px;width:100%;}
 .upload-form input, .upload-form button{padding:8px;border-radius:6px;border:2px solid #00cfff;background:#001a26;color:#00eaff;font-family:'Cinzel';}
 .upload-form button{cursor:pointer;}
-.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:20px;background:rgba(0,0,0,0.7);flex-wrap:wrap;}
+.start-screen{height:100vh;display:flex;align-items:center;justify-content:center;gap:20px;background:rgba(0,0,0,0.7);flex-direction:column;}
 .start-btn{padding:20px 40px;font-size:24px;font-family:'Cinzel';border:2px solid #00cfff;background:linear-gradient(#0b1a2a,#02060c);color:#00eaff;cursor:pointer;border-radius:12px;transition:0.3s;box-shadow:0 0 20px rgba(0,200,255,0.4);}
 .start-btn:hover{transform:scale(1.05);box-shadow:0 0 40px #00cfff;}
+@media(max-width:700px){.dashboard-body{flex-direction:column;}.menu{width:100%;flex-direction:row;flex-wrap:wrap;gap:5px;}.menu-slot{flex:1;}}
 </style>
 </head>
 <body>
 
 <div class="start-screen" id="start">
-  <button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
-  <button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
+<button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
+<button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
 </div>
 
 <div class="dashboard" id="dashboard">
-  <div class="header">Atherion Gaming</div>
-  <div class="dashboard-body">
-    <div class="menu" id="menu"></div>
-    <div class="content" id="mainContent"></div>
-  </div>
+<div class="header">Atherion Gaming</div>
+<div class="dashboard-body">
+<div class="menu" id="menu"></div>
+<div class="content" id="mainContent"></div>
+</div>
 </div>
 
 <script>
-let current="";
-const mainContent=document.getElementById("mainContent");
+const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA";
+const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
 
+let current = "";
 const config={
-  magic:{
-    title:"Magic Time Two",
-    scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
-    yt:"https://www.youtube.com/@atheriongames8520"
-  },
-  mystic:{
-    title:"Mystic of Masters",
-    scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
-    yt:"https://www.youtube.com/@AndurilMysticofMasters"
-  }
+magic:{
+  title:"Magic Time Two",
+  scripts:[{name:"Eventek", url:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec"}],
+  yt:"https://www.youtube.com/@atheriongames8520"
+},
+mystic:{
+  title:"Mystic of Masters",
+  scripts:[{name:"Metin Spawn", url:"https://script.google.com/macros/s/AKfycbx170_GtIceSLF6Az3Hdl5VvppkbdZJCKrFrKUytScbt5ZKawRsRmijstGrQzhDCJDD/exec"}],
+  yt:"https://www.youtube.com/@AndurilMysticofMasters"
+}
 };
 
 function enter(type){
@@ -70,16 +73,19 @@ function goBack(){
   current="";
 }
 
+// MENU
 function loadMenu(){
   const menu=document.getElementById("menu");
   menu.innerHTML="";
 
+  // 0. vissza gomb
   const back=document.createElement("div");
   back.className="menu-slot";
   back.textContent="Vissza";
   back.onclick=goBack;
   menu.appendChild(back);
 
+  // Script gombok
   config[current].scripts.forEach(s=>{
     const div=document.createElement("div");
     div.className="menu-slot";
@@ -88,18 +94,21 @@ function loadMenu(){
     menu.appendChild(div);
   });
 
+  // YouTube gomb
   const ytBtn=document.createElement("div");
   ytBtn.className="menu-slot";
   ytBtn.textContent="YouTube";
   ytBtn.onclick=()=>{window.open(config[current].yt,"_blank");};
   menu.appendChild(ytBtn);
 
+  // Galéria
   const galBtn=document.createElement("div");
   galBtn.className="menu-slot";
   galBtn.textContent="Galéria";
   galBtn.onclick=showGallery;
   menu.appendChild(galBtn);
 
+  // Feltöltés
   const upBtn=document.createElement("div");
   upBtn.className="menu-slot";
   upBtn.textContent="Feltöltés";
@@ -107,26 +116,25 @@ function loadMenu(){
   menu.appendChild(upBtn);
 }
 
-// --- Supabase init ---
-const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA";
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
+// GALÉRIA
+const mainContent=document.getElementById("mainContent");
 async function showGallery(){
-  mainContent.innerHTML="Betöltés...";
-  try {
-    const { data, error } = await supabaseClient.from('images').select('*').eq('server', current).order('created_at', { ascending: false });
+  try{
+    const { data: images, error } = await supabase.from('images').select('*').eq('server', current);
     if(error){throw error;}
     let html=`<div class="gallery">`;
-    data.forEach(img=>{html+=`<img src="${img.url}">`;});
+    images.forEach(img=>{
+      html+=`<img src="${img.url}">`;
+    });
     html+=`</div>`;
     mainContent.innerHTML=html;
-  } catch(err){
+  }catch(err){
     console.error(err);
-    mainContent.innerHTML="Hiba a galéria betöltésekor";
+    mainContent.innerHTML=`<p>Hiba történt a galéria betöltésénél</p>`;
   }
 }
 
+// FELTÖLTÉS
 function showUploadForm(){
   mainContent.innerHTML=`<form class="upload-form">
     <label>Kép kiválasztása:</label>
@@ -135,29 +143,31 @@ function showUploadForm(){
     <input type="date" id="uploadDate" required>
     <label>Feltöltő neve:</label>
     <input type="text" id="uploaderName" required>
-    <button type="button" onclick="uploadImage()">Feltöltés</button>
+    <button type="button" onclick="uploadImageSupabase()">Feltöltés</button>
   </form>`;
 }
 
-async function uploadImage(){
+async function uploadImageSupabase(){
   const fileInput=document.getElementById("imgInput");
   const dateInput=document.getElementById("uploadDate").value;
   const nameInput=document.getElementById("uploaderName").value;
+
   if(!fileInput.files[0] || !dateInput || !nameInput){alert("Tölts ki minden mezőt!"); return;}
 
   const file=fileInput.files[0];
-  const filename = `${current}_${Date.now()}_${file.name}`;
+  const filename=`${Date.now()}_${file.name}`;
 
   try{
-    // Upload Storage
-    const { error: uploadError } = await supabaseClient.storage.from('gallery').upload(filename, file);
-    if(uploadError){throw uploadError;}
-    const { data: publicData } = supabaseClient.storage.from('gallery').getPublicUrl(filename);
+    const { data, error: uploadError } = await supabase.storage.from('gallery').upload(filename, file);
+    if(uploadError) throw uploadError;
 
-    // Insert row
-    const { error: insertError } = await supabaseClient.from('images').insert([{server:current,url:publicData.publicUrl,uploader:nameInput,date:dateInput}]);
-    if(insertError){throw insertError;}
+    const { data: publicData, error: urlError } = supabase.storage.from('gallery').getPublicUrl(filename);
+    if(urlError) throw urlError;
 
+    const { error: insertError } = await supabase.from('images').insert([{server:current, url:publicData.publicUrl, uploader:nameInput, date:dateInput}]);
+    if(insertError) throw insertError;
+
+    alert("Sikeres feltöltés!");
     showGallery();
   }catch(err){
     console.error(err);
