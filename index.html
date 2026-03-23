@@ -5,7 +5,8 @@
 <title>Atherion Gaming</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <style>
 body{
@@ -22,7 +23,6 @@ font-family:'Cinzel';
 font-size:60px;
 color:#00cfff;
 text-shadow:0 0 30px #00cfff;
-margin-bottom:10px;
 }
 
 .dashboard{
@@ -54,7 +54,6 @@ cursor:pointer;
 font-family:'Cinzel';
 color:#00cfff;
 background:#070d14;
-transition:0.25s;
 }
 
 .menu-slot:hover{
@@ -80,8 +79,8 @@ gap:15px;
 width:150px;
 height:150px;
 object-fit:cover;
-border-radius:8px;
 border:2px solid #00cfff;
+border-radius:8px;
 }
 
 .start-screen{
@@ -98,17 +97,9 @@ padding:25px 50px;
 font-size:28px;
 font-family:'Cinzel';
 border:2px solid #00cfff;
-background:linear-gradient(#0b1a2a,#02060c);
+background:#02060c;
 color:#00eaff;
 cursor:pointer;
-border-radius:12px;
-}
-
-.upload-form{
-display:flex;
-flex-direction:column;
-gap:10px;
-width:300px;
 }
 </style>
 </head>
@@ -116,8 +107,8 @@ width:300px;
 <body>
 
 <div class="start-screen" id="start">
-<button class="start-btn" onclick="enter('magic')">Magic Time Two</button>
-<button class="start-btn" onclick="enter('mystic')">Mystic of Masters</button>
+<button class="start-btn" onclick="enterServer('magic')">Magic Time Two</button>
+<button class="start-btn" onclick="enterServer('mystic')">Mystic of Masters</button>
 </div>
 
 <div class="dashboard" id="dashboard">
@@ -131,12 +122,13 @@ width:300px;
 
 <script>
 
-/* SUPABASE */
 const supabaseUrl = "https://stdlzcitdmapnsulqmdi.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN0ZGx6Y2l0ZG1hcG5zdWxxbWRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQyNzA3OTksImV4cCI6MjA4OTg0Njc5OX0.xHbj4beiQR18X8QWraKPYT5DuslIUag-PM8zI14l0JA";
+
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-/* SCRIPT LINK */
+let currentServer = "";
+
 const config = {
 magic:{
 script:"https://script.google.com/macros/s/AKfycbxpzxIoRx9c-eHiolmtLIF10hy9QtSREJZmUcCdaSjf8hpD1ytfnwcJh1esW_Fl8Cyy4g/exec",
@@ -148,115 +140,94 @@ yt:"https://www.youtube.com/@AndurilMysticofMasters"
 }
 };
 
-let current="";
-const mainContent=document.getElementById("mainContent");
+function enterServer(type){
+currentServer = type;
 
-/* SERVER SELECT */
-function enter(type){
-current=type;
 document.getElementById("start").style.display="none";
 document.getElementById("dashboard").style.display="flex";
+
 loadMenu();
 }
 
-/* BACK */
 function goBack(){
 document.getElementById("dashboard").style.display="none";
 document.getElementById("start").style.display="flex";
 }
 
-/* MENU */
 function loadMenu(){
 const menu=document.getElementById("menu");
 menu.innerHTML="";
 
-createMenu("Vissza",goBack);
+addMenu("Vissza",goBack);
 
-if(current==="magic")
-createMenu("Eventek",()=>window.open(config.magic.script));
-
-if(current==="mystic")
-createMenu("Metin Spawn",()=>window.open(config.mystic.script));
-
-createMenu("YouTube",()=>window.open(config[current].yt));
-
-createMenu("Galéria",showGallery);
-
-createMenu("Feltöltés",showUploadForm);
+if(currentServer==="magic"){
+addMenu("Eventek",()=>window.open(config.magic.script));
 }
 
-function createMenu(name,action){
-const div=document.createElement("div");
-div.className="menu-slot";
-div.textContent=name;
-div.onclick=action;
-menu.appendChild(div);
+if(currentServer==="mystic"){
+addMenu("Metin Spawn",()=>window.open(config.mystic.script));
 }
 
-/* GALERIA */
+addMenu("YouTube",()=>window.open(config[currentServer].yt));
+addMenu("Galéria",showGallery);
+addMenu("Feltöltés",showUpload);
+}
+
+function addMenu(name,action){
+const btn=document.createElement("div");
+btn.className="menu-slot";
+btn.innerText=name;
+btn.onclick=action;
+menu.appendChild(btn);
+}
+
 async function showGallery(){
 
-mainContent.innerHTML="Betöltés...";
-
-const { data, error } = await supabase
+const { data } = await supabase
 .from("images")
 .select("*")
-.eq("server", current);
+.eq("server", currentServer);
 
-let html=`<div class="gallery">`;
+let html="<div class='gallery'>";
 
 data.forEach(img=>{
 html+=`<img src="${img.url}">`;
 });
 
-html+=`</div>`;
+html+="</div>";
 
-mainContent.innerHTML=html;
+document.getElementById("mainContent").innerHTML=html;
 }
 
-/* FELTOLTÉS */
-function showUploadForm(){
-mainContent.innerHTML=`
-<div class="upload-form">
-<input type="file" id="imgInput">
-<input type="date" id="uploadDate">
-<input type="text" id="uploaderName" placeholder="Feltöltő neve">
-<button onclick="uploadImage()">Feltöltés</button>
-</div>
+function showUpload(){
+document.getElementById("mainContent").innerHTML=`
+<input type="file" id="file"><br><br>
+<input type="date" id="date"><br><br>
+<input type="text" id="name" placeholder="Ki töltötte fel"><br><br>
+<button onclick="upload()">Feltöltés</button>
 `;
 }
 
-async function uploadImage(){
+async function upload(){
 
-const file=document.getElementById("imgInput").files[0];
-const date=document.getElementById("uploadDate").value;
-const name=document.getElementById("uploaderName").value;
+const file=document.getElementById("file").files[0];
+const date=document.getElementById("date").value;
+const name=document.getElementById("name").value;
 
-if(!file || !date || !name){
-alert("Tölts ki minden mezőt");
-return;
-}
+const fileName = Date.now()+"_"+file.name;
 
-const fileName=Date.now()+"_"+file.name;
+await supabase.storage.from("gallery").upload(fileName,file);
 
-await supabase.storage
-.from("gallery")
-.upload(fileName,file);
+const { data } = supabase.storage.from("gallery").getPublicUrl(fileName);
 
-const { data } = supabase.storage
-.from("gallery")
-.getPublicUrl(fileName);
-
-await supabase
-.from("images")
-.insert({
+await supabase.from("images").insert({
 url:data.publicUrl,
-server:current,
+server:currentServer,
 uploader:name,
 date:date
 });
 
-alert("Kép feltöltve!");
+alert("Feltöltve");
 }
 
 </script>
